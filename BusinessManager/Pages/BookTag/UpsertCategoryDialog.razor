@@ -1,0 +1,63 @@
+﻿@inject ISnackbar Snackbar
+@inject IUnitOfWork UnitOfWork
+<MudDialog>
+    <TitleContent>
+        @if (category.Id == 0)
+        {
+            <MudText Typo="Typo.h6">
+                <MudIcon Icon="@Icons.Material.Filled.Add" Class="mr-3 mb-n1" />
+                Add Category
+            </MudText>
+        }
+        else
+        {
+            <MudText Typo="Typo.h6">
+                <MudIcon Icon="@Icons.Material.Filled.Update" Class="mr-3 mb-n1" />
+                Update Category
+            </MudText>
+        }
+    </TitleContent>
+    <DialogContent>
+        <EditForm Model="category" OnValidSubmit="OnValidSubmit" id="add-category">
+            <DataAnnotationsValidator />
+            <MudTextField Label="Category" @bind-Value="category.Name" For="@(() => category.Name)" />
+        </EditForm>
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="Cancel" Disabled="isDisabled">Cancel</MudButton>
+        @if (category.Id == 0)
+        {
+            <MudButton Color="Color.Primary" ButtonType="ButtonType.Submit" Disabled="isDisabled" form="add-category">Add</MudButton>
+        }
+        else
+        {
+            <MudButton Color="Color.Primary" ButtonType="ButtonType.Submit" Disabled="isDisabled" form="add-category">Update</MudButton>
+        }
+    </DialogActions>
+</MudDialog>
+@code {
+    [CascadingParameter] MudDialogInstance MudDialog { get; set; }
+    private bool isDisabled = false;
+
+    [Parameter] public BookTagDTO category { get; set; }
+
+    private async void OnValidSubmit(EditContext editContext)
+    {
+        isDisabled = true;
+        if (category.Id == 0)
+        {
+            await UnitOfWork.BookTag.CreateAsync(category);
+            Snackbar.Add("Added Successfully", Severity.Success);
+        }
+        else
+        {
+            await UnitOfWork.BookTag.UpdateAsync(category);
+            Snackbar.Add("Updated Successfully", Severity.Success);
+        }
+        await UnitOfWork.SaveAsync();
+        isDisabled = false;
+        MudDialog.Close(DialogResult.Ok(category));
+    }
+
+    private void Cancel() => MudDialog.Cancel();
+}
