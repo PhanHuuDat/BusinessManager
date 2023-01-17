@@ -17,7 +17,7 @@ namespace BusinessManager.Business.Repositories.Implements
         {
 
         }
-        public Task<PublisherDTO> UpdateAsync(PublisherDTO entity)
+        public Task<PublisherDTO?> UpdateAsync(PublisherDTO entity)
         {
             throw new NotImplementedException();
         }

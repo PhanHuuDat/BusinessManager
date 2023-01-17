@@ -18,7 +18,7 @@ namespace BusinessManager.Business.Repositories.Implements
 
         }
 
-        public Task<CoverFormDTO> UpdateAsync(CoverFormDTO entity)
+        public Task<CoverFormDTO?> UpdateAsync(CoverFormDTO entity)
         {
             throw new NotImplementedException();
         }
