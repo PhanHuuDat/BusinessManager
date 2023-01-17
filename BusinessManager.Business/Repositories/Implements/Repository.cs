@@ -13,12 +13,14 @@ using System.Threading.Tasks;
 
 namespace BusinessManager.Business.Repositories.Implements
 {
-    public class Repository<T, U> : IRepository<T, U> where T : BaseDTO where U : BaseDAO
+    public class Repository<T, U> : IRepository<T, U> where T : class where U : class
     {
+        private readonly ApplicationDbContext _db;
         private readonly DbSet<U> dbSet;
         private readonly IMapper _mapper;
         public Repository(ApplicationDbContext db, IMapper mapper)
         {
+            _db = db;
             _mapper = mapper;
             dbSet = db.Set<U>();
         }
@@ -27,9 +29,10 @@ namespace BusinessManager.Business.Repositories.Implements
             U obj = _mapper.Map<U>(entity);
             try
             {
-                obj.CreatedDate = DateTimeOffset.UtcNow;
                 await dbSet.AddAsync(obj);
-            }catch(Exception ex)
+                await _db.SaveChangesAsync();
+            }
+            catch (Exception ex)
             {
                 Console.WriteLine(ex.ToString());
                 return null;
@@ -37,12 +40,13 @@ namespace BusinessManager.Business.Repositories.Implements
             return _mapper.Map<T>(obj);
         }
 
-        public async Task<bool> DeleteAsync(T entity)
+        public async Task<bool> DeleteAsync(int entityId)
         {
             try
             {
-                U obj = _mapper.Map<U>(entity);
-                await Task.Run(() => dbSet.Remove(obj));
+                var existingEntity = await dbSet.FindAsync(entityId);
+                await Task.Run(() => dbSet.Remove(existingEntity!));
+                await _db.SaveChangesAsync();
             }
             catch (Exception ex)
             {
@@ -52,12 +56,19 @@ namespace BusinessManager.Business.Repositories.Implements
             return true;
         }
 
-        public async Task<bool> DeleteRangeAsync(IEnumerable<T> entities)
+        public async Task<bool> DeleteRangeAsync(IEnumerable<int> entitiesId)
         {
             try
             {
-                IEnumerable<U> objects = (IEnumerable<U>)_mapper.Map<U>(entities);
-                await Task.Run(() => dbSet.RemoveRange(objects));
+                await Task.Run(() =>
+                {
+                    Parallel.ForEach(entitiesId, async entityId =>
+                    {
+                        await DeleteAsync(entityId);
+                    });
+                });
+
+                await _db.SaveChangesAsync();
             }
             catch (Exception ex)
             {
@@ -93,7 +104,7 @@ namespace BusinessManager.Business.Repositories.Implements
             return _mapper.Map<IEnumerable<U>, IEnumerable<T>>(await query.ToListAsync());
         }
 
-        public async Task<T> GetFirstOrDefaultAsync(Expression<Func<U, bool>>? filter = null, string? includeProperties = null)
+        public async Task<T?> GetFirstOrDefaultAsync(Expression<Func<U, bool>>? filter = null, string? includeProperties = null)
         {
             IQueryable<U> query = dbSet;
             if (filter != null)
