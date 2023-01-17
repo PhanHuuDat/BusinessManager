@@ -3,8 +3,8 @@ using BusinessManager.Models.DTOs;
 
 namespace BusinessManager.Business.Repositories.IRepositories
 {
-    public interface IBookTagRepository : IRepository<BookTagDTO, BookTag>
+    public interface IAuthorRepository : IRepository<AuthorDTO,Author>
     {
-        Task<BookTagDTO?> UpdateAsync(BookTagDTO entity);
+        Task<AuthorDTO?> UpdateAsync(AuthorDTO entity);
     }
 }

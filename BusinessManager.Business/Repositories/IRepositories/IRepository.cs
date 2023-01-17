@@ -4,7 +4,7 @@ using System.Linq.Expressions;
 
 namespace BusinessManager.Business.Repositories.IRepositories
 {
-    public interface IRepository<T, U> where T : class where U : class
+    public interface IRepository<T, U> where T : BaseDTO where U : BaseDAO
     {
         Task<T?> CreateAsync(T entity);
         Task<bool> DeleteAsync(int entityId);

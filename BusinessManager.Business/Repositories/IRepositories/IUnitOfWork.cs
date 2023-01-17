@@ -1,14 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace BusinessManager.Business.Repositories.IRepositories
+﻿namespace BusinessManager.Business.Repositories.IRepositories
 {
     public interface IUnitOfWork : IDisposable
     {
+        IAuthorRepository Author { get; }
+        IBookCostRepository BookCost { get; }
+        IBookImageRepository BookImage { get; }
+        IBookRepository Book { get; }
+        IBookSizeRepository BookSize { get; }
         IBookTagRepository BookTag { get; }
-        Task SaveAsync();
+        ICoverFormRepository CoverForm { get; }
+        IPublisherRepository Publisher { get; }
     }
 }
