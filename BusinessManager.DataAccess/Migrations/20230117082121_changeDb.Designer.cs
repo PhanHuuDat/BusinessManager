@@ -4,6 +4,7 @@ using BusinessManager.DataAccess.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BusinessManager.DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230117082121_changeDb")]
+    partial class changeDb
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -37,30 +39,6 @@ namespace BusinessManager.DataAccess.Migrations
                     b.ToTable("BookBookTag");
                 });
 
-            modelBuilder.Entity("BusinessManager.DataAccess.DAOs.Author", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<DateTimeOffset>("CreatedDate")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<DateTimeOffset>("UpdatedDate")
-                        .HasColumnType("datetimeoffset");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Author");
-                });
-
             modelBuilder.Entity("BusinessManager.DataAccess.DAOs.Book", b =>
                 {
                     b.Property<int>("ID")
@@ -69,8 +47,10 @@ namespace BusinessManager.DataAccess.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"), 1L, 1);
 
-                    b.Property<int>("AuthorId")
-                        .HasColumnType("int");
+                    b.Property<string>("Author")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<int>("BookSizeId")
                         .HasColumnType("int");
@@ -92,6 +72,9 @@ namespace BusinessManager.DataAccess.Migrations
                     b.Property<int>("PublisherId")
                         .HasColumnType("int");
 
+                    b.Property<int>("SupplierId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasMaxLength(100)
@@ -102,13 +85,13 @@ namespace BusinessManager.DataAccess.Migrations
 
                     b.HasKey("ID");
 
-                    b.HasIndex("AuthorId");
-
                     b.HasIndex("BookSizeId");
 
                     b.HasIndex("CoverFormId");
 
                     b.HasIndex("PublisherId");
+
+                    b.HasIndex("SupplierId");
 
                     b.ToTable("Book");
                 });
@@ -284,6 +267,40 @@ namespace BusinessManager.DataAccess.Migrations
                     b.ToTable("Publisher");
                 });
 
+            modelBuilder.Entity("BusinessManager.DataAccess.DAOs.Supplier", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("Address")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
+
+                    b.Property<DateTimeOffset>("CreatedDate")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("Phone")
+                        .IsRequired()
+                        .HasMaxLength(15)
+                        .HasColumnType("nvarchar(15)");
+
+                    b.Property<DateTimeOffset>("UpdatedDate")
+                        .HasColumnType("datetimeoffset");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Supplier");
+                });
+
             modelBuilder.Entity("BookBookTag", b =>
                 {
                     b.HasOne("BusinessManager.DataAccess.DAOs.BookTag", null)
@@ -301,12 +318,6 @@ namespace BusinessManager.DataAccess.Migrations
 
             modelBuilder.Entity("BusinessManager.DataAccess.DAOs.Book", b =>
                 {
-                    b.HasOne("BusinessManager.DataAccess.DAOs.Author", "Author")
-                        .WithMany("Books")
-                        .HasForeignKey("AuthorId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("BusinessManager.DataAccess.DAOs.BookSize", "BookSize")
                         .WithMany("Books")
                         .HasForeignKey("BookSizeId")
@@ -325,13 +336,19 @@ namespace BusinessManager.DataAccess.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Author");
+                    b.HasOne("BusinessManager.DataAccess.DAOs.Supplier", "Supplier")
+                        .WithMany("Books")
+                        .HasForeignKey("SupplierId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("BookSize");
 
                     b.Navigation("CoverForm");
 
                     b.Navigation("Publisher");
+
+                    b.Navigation("Supplier");
                 });
 
             modelBuilder.Entity("BusinessManager.DataAccess.DAOs.BookCost", b =>
@@ -356,11 +373,6 @@ namespace BusinessManager.DataAccess.Migrations
                     b.Navigation("Book");
                 });
 
-            modelBuilder.Entity("BusinessManager.DataAccess.DAOs.Author", b =>
-                {
-                    b.Navigation("Books");
-                });
-
             modelBuilder.Entity("BusinessManager.DataAccess.DAOs.Book", b =>
                 {
                     b.Navigation("BookCosts");
@@ -379,6 +391,11 @@ namespace BusinessManager.DataAccess.Migrations
                 });
 
             modelBuilder.Entity("BusinessManager.DataAccess.DAOs.Publisher", b =>
+                {
+                    b.Navigation("Books");
+                });
+
+            modelBuilder.Entity("BusinessManager.DataAccess.DAOs.Supplier", b =>
                 {
                     b.Navigation("Books");
                 });
