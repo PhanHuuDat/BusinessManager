@@ -13,11 +13,11 @@ using System.Threading.Tasks;
 
 namespace BusinessManager.Business.Repositories.Implements
 {
-    public class Repository<T, U> : IRepository<T, U> where T : class where U : class
+    public class Repository<T, U> : IRepository<T, U> where T : BaseDTO where U : BaseDAO
     {
-        private readonly ApplicationDbContext _db;
+        protected readonly ApplicationDbContext _db;
         private readonly DbSet<U> dbSet;
-        private readonly IMapper _mapper;
+        protected readonly IMapper _mapper;
         public Repository(ApplicationDbContext db, IMapper mapper)
         {
             _db = db;
@@ -29,31 +29,28 @@ namespace BusinessManager.Business.Repositories.Implements
             U obj = _mapper.Map<U>(entity);
             try
             {
-                await dbSet.AddAsync(obj);
+                var result = await dbSet.AddAsync(obj);
                 await _db.SaveChangesAsync();
+                return _mapper.Map<T>(result.Entity);
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex.ToString());
                 return null;
             }
-            return _mapper.Map<T>(obj);
+            
         }
 
         public async Task<bool> DeleteAsync(int entityId)
         {
-            try
+            if (entityId != 0)
             {
                 var existingEntity = await dbSet.FindAsync(entityId);
                 await Task.Run(() => dbSet.Remove(existingEntity!));
                 await _db.SaveChangesAsync();
+                return true;
             }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.ToString());
-                return false;
-            }
-            return true;
+            return false;
         }
 
         public async Task<bool> DeleteRangeAsync(IEnumerable<int> entitiesId)
@@ -120,7 +117,8 @@ namespace BusinessManager.Business.Repositories.Implements
                     query = query.Include(includeProperty);
                 }
             }
-            return _mapper.Map<T>(await query.FirstOrDefaultAsync());
+            var result = await query.FirstOrDefaultAsync();
+            return _mapper.Map<T?>(result);
         }
 
     }
