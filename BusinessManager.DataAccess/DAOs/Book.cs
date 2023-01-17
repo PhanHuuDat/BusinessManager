@@ -16,17 +16,13 @@ namespace BusinessManager.DataAccess.DAOs
         [StringLength(1000)]
         public string Description { get; set; } = string.Empty;
 
-        [Required]
-        [StringLength(50)]
-        public string Author { get; set; } = string.Empty;
-
         [ForeignKey("Publisher")]
         public int PublisherId { get; set; }
         public Publisher? Publisher { get; set; }
 
-        [ForeignKey("Supplier")]
-        public int SupplierId { get; set; }
-        public Supplier? Supplier { get; set; }
+        [ForeignKey("Author")]
+        public int AuthorId { get; set; }
+        public Author? Author { get; set; }
 
         [ForeignKey("BookSize")]
         public int BookSizeId { get; set; }
