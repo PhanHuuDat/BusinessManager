@@ -10,4 +10,8 @@
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="6.0.12" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\BusinessManager.DataAccess\BusinessManager.DataAccess.csproj" />
+  </ItemGroup>
+
 </Project>
