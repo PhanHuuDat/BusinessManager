@@ -79,7 +79,7 @@ namespace BusinessManager.Business.Repositories.Implements
             Func<IQueryable<U>, IOrderedQueryable<U>>? orderby = null,
             string? includeProperties = null)
         {
-            IQueryable<U> query = dbSet;
+            IQueryable<U> query = dbSet.AsNoTracking();
             if (filter != null)
             {
                 query = query.Where(filter);
