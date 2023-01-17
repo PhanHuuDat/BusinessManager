@@ -2,7 +2,7 @@
 @inject IUnitOfWork UnitOfWork
 <MudDialog>
     <TitleContent>
-        @if (category.Id == 0)
+        @if (bookTag!.Id == 0)
         {
             <MudText Typo="Typo.h6">
                 <MudIcon Icon="@Icons.Material.Filled.Add" Class="mr-3 mb-n1" />
@@ -18,14 +18,14 @@
         }
     </TitleContent>
     <DialogContent>
-        <EditForm Model="category" OnValidSubmit="OnValidSubmit" id="add-category">
+        <EditForm Model="bookTag" OnValidSubmit="OnValidSubmit" id="add-category">
             <DataAnnotationsValidator />
-            <MudTextField Label="Category" @bind-Value="category.Name" For="@(() => category.Name)" />
+            <MudTextField Label="Category" @bind-Value="bookTag!.Name" For="@(() => bookTag!.Name)" />
         </EditForm>
     </DialogContent>
     <DialogActions>
         <MudButton OnClick="Cancel" Disabled="isDisabled">Cancel</MudButton>
-        @if (category.Id == 0)
+        @if (bookTag!.Id == 0)
         {
             <MudButton Color="Color.Primary" ButtonType="ButtonType.Submit" Disabled="isDisabled" form="add-category">Add</MudButton>
         }
@@ -39,24 +39,37 @@
     [CascadingParameter] MudDialogInstance MudDialog { get; set; }
     private bool isDisabled = false;
 
-    [Parameter] public BookTagDTO category { get; set; }
+    [Parameter] public BookTagDTO? bookTag { get; set; } = new BookTagDTO();
 
     private async void OnValidSubmit(EditContext editContext)
     {
         isDisabled = true;
-        if (category.Id == 0)
+        if (bookTag!.Id == 0)
         {
-            await UnitOfWork.BookTag.CreateAsync(category);
-            Snackbar.Add("Added Successfully", Severity.Success);
+            bookTag = await UnitOfWork.BookTag.CreateAsync(bookTag);
+            if(bookTag != null)
+            {
+                Snackbar.Add("Added Successfully", Severity.Success);
+            }
+            else
+            {
+                Snackbar.Add("Added Failed", Severity.Error);
+            }
         }
         else
         {
-            await UnitOfWork.BookTag.UpdateAsync(category);
-            Snackbar.Add("Updated Successfully", Severity.Success);
+            bookTag = await UnitOfWork.BookTag.UpdateAsync(bookTag);
+            if(bookTag != null)
+            {
+                Snackbar.Add("Updated Successfully", Severity.Success);
+            }
+            else
+            {
+                Snackbar.Add("Updated Failed", Severity.Error);
+            }
         }
-        await UnitOfWork.SaveAsync();
         isDisabled = false;
-        MudDialog.Close(DialogResult.Ok(category));
+        MudDialog.Close(DialogResult.Ok(bookTag));
     }
 
     private void Cancel() => MudDialog.Cancel();

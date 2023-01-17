@@ -5,7 +5,7 @@
 
 <PageTitle>Book Tag List</PageTitle>
 
-<MudTable Items="@Elements" Hover="true" Striped="true" @bind-SelectedItem="selectedItem" Loading="isLoading"
+<MudTable Items="@elements" Hover="true" Striped="true" @bind-SelectedItem="selectedItem" Loading="isLoading"
           Filter="new Func<BookTagDTO,bool>(FilterFunc)">
     <LoadingContent>
         <MudProgressCircular Color="Color.Default" Indeterminate="true" />
@@ -15,7 +15,7 @@
         <MudSpacer />
         <MudTextField @bind-Value="searchString" Placeholder="Search" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
         <MudIconButton Icon="@Icons.Material.Filled.Add" Variant="Variant.Filled" Color="Color.Primary" ButtonType="ButtonType.Button"
-                       @onclick="(e) => OpenDialog(new BookTagDTO())" />
+                       @onclick="(e) => OpenUpsertDialog(new BookTagDTO())" />
     </ToolBarContent>
     <ColGroup>
         <col />
@@ -28,8 +28,8 @@
         <MudTd DataLabel="Name">@context.Name</MudTd>
         <MudTd>
             <div class="d-flex">
-                <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Outlined.Edit" Class="pa-0 flex-auto" @onclick="(e) => OpenDialog(context)" />
-                <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Outlined.Delete" Class="pa-0 flex-auto" @onclick="(e) => DeleteCategoryAsync(context)" />
+                <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Outlined.Edit" Class="pa-0 flex-auto" @onclick="(e) => OpenUpsertDialog(context)" />
+                <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Outlined.Delete" Class="pa-0 flex-auto" @onclick="(e) => DeleteBookTagAsync(context)" />
             </div>
         </MudTd>
     </RowTemplate>

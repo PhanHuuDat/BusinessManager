@@ -7,36 +7,40 @@ namespace BusinessManagerWeb.Pages.BookTag
 {
     public partial class BookTag
     {
+
+#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
         [Inject] protected IUnitOfWork unitOfWork { get; set; }
         [Inject] protected IDialogService DialogService { get; set; }
+#pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
 
         private string searchString = "";
         private BookTagDTO selectedItem = new();
-        private List<BookTagDTO> Elements = new List<BookTagDTO>();
-        private bool isLoading { get; set; }
+        private List<BookTagDTO> elements = new List<BookTagDTO>();
+        private bool isLoading = false;
 
-        protected override void OnAfterRender(bool firstRender)
+        protected override async Task OnAfterRenderAsync(bool firstRender)
         {
+            await base.OnAfterRenderAsync(firstRender);
             if (firstRender)
             {
-                GetCategoryListAsync();
+                await GetCategoryListAsync();
             }
         }
 
-        private async void GetCategoryListAsync()
+        private async Task GetCategoryListAsync()
         {
-            isLoading= true;
+            isLoading = true;
             StateHasChanged();
             var enumerable = await unitOfWork.BookTag.GetAllAsync();
-            Elements = enumerable.ToList();
+            elements = enumerable.ToList();
             isLoading = false;
             StateHasChanged();
         }
 
-        private async Task OpenDialog(BookTagDTO categoryDTO)
+        private async Task OpenUpsertDialog(BookTagDTO? bookTagDTO)
         {
             //Setting Dialog
-            var parameter = new DialogParameters { ["category"] = categoryDTO };
+            var parameter = new DialogParameters { ["bookTag"] = bookTagDTO };
             var options = new DialogOptions { DisableBackdropClick = true };
             var dialog = await DialogService.ShowAsync<UpsertBookTagDialog>("", parameter, options);
             //Get Dialog result
@@ -45,23 +49,29 @@ namespace BusinessManagerWeb.Pages.BookTag
             //Handle returned value
             if (!resultFromDialog.Canceled)
             {
-                var result = (BookTagDTO)resultFromDialog.Data;
-                if (categoryDTO.Id == 0)
+                //Get result when Dialog return ok
+                var result = (BookTagDTO?)resultFromDialog.Data;
+                //Handle when return value have Id != 0 => valid data
+                if (result != null)
                 {
-                    Elements.Insert(0, result);
-                }
-                else
-                {
-                    var obj = Elements.FirstOrDefault(e => e.Id == result.Id);
+                    //Check that is the object exist in list
+                    var obj = elements.Find(e => e.Name == result.Name);
                     if (obj != null)
                     {
+                        //Change data if exist
                         obj.Name = result.Name;
                     }
+                    else
+                    {
+                        //Create Data Success + Not exist in list => new data
+                        await GetEntity(result);
+                    }
                 }
+
             }
         }
 
-        private async Task DeleteCategoryAsync(BookTagDTO categoryDTO)
+        private async Task DeleteBookTagAsync(BookTagDTO categoryDTO)
         {
             //Setting Dialog
             var parameters = new DialogParameters
@@ -83,7 +93,7 @@ namespace BusinessManagerWeb.Pages.BookTag
                 var result = (bool)resultFromDialog.Data;
                 if (result)
                 {
-                    Elements.Remove(categoryDTO);
+                    elements.Remove(categoryDTO);
                 }
             }
         }
@@ -95,6 +105,17 @@ namespace BusinessManagerWeb.Pages.BookTag
             if (item.Name.Contains(searchString, StringComparison.OrdinalIgnoreCase))
                 return true;
             return false;
+        }
+
+        private async Task GetEntity(BookTagDTO bookTagDTO)
+        {
+
+            var getData = await unitOfWork.BookTag.GetFirstOrDefaultAsync(tag => tag.Name == bookTagDTO.Name);
+            if (getData != null)
+            {
+                elements.Insert(0, getData);
+            }
+
         }
     }
 }

@@ -36,7 +36,6 @@
         {
             Snackbar.Add("Deleted Failed", Severity.Error);
         }
-        await UnitOfWork.SaveAsync();
         isDisabled = false;
         MudDialog.Close(DialogResult.Ok(true));
     }
