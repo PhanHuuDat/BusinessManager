@@ -15,7 +15,7 @@ namespace BusinessManager.Business.Mapper
             CreateMap<BookTag, BookTagDTO>().ReverseMap();
             CreateMap<CoverForm,CoverFormDTO>().ReverseMap();
             CreateMap<Publisher,PublisherDTO>().ReverseMap();
-            CreateMap<Supplier,SupplierDTO>().ReverseMap();
+            CreateMap<Author,AuthorDTO>().ReverseMap();
         }
     }
 }
