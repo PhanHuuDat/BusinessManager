@@ -18,7 +18,7 @@ namespace BusinessManager.Business.Repositories.Implements
 
         }
 
-        public Task<BookImageDTO> UpdateAsync(BookImageDTO entity)
+        public Task<BookImageDTO?> UpdateAsync(BookImageDTO entity)
         {
             throw new NotImplementedException();
         }
