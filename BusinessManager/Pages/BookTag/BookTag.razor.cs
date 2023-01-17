@@ -38,7 +38,7 @@ namespace BusinessManagerWeb.Pages.BookTag
             //Setting Dialog
             var parameter = new DialogParameters { ["category"] = categoryDTO };
             var options = new DialogOptions { DisableBackdropClick = true };
-            var dialog = await DialogService.ShowAsync<UpsertCategoryDialog>("", parameter, options);
+            var dialog = await DialogService.ShowAsync<UpsertBookTagDialog>("", parameter, options);
             //Get Dialog result
             var resultFromDialog = await dialog.Result;
 
@@ -66,13 +66,13 @@ namespace BusinessManagerWeb.Pages.BookTag
             //Setting Dialog
             var parameters = new DialogParameters
             {
-                { "ContentText", "Do you really want to delete this category? This process cannot be undone." },
+                { "ContentText", "Do you really want to delete this book tag? This process cannot be undone." },
                 { "ButtonText", "Delete" },
                 { "Color", Color.Error },
-                { "category", categoryDTO}
+                { "bookTagId", categoryDTO.Id}
             };
             var options = new DialogOptions() { CloseButton = true, MaxWidth = MaxWidth.ExtraSmall };
-            var dialog = DialogService.Show<DeleteCategory>("Delete Category", parameters, options);
+            var dialog = DialogService.Show<DeleteBookTag>("Delete Book Tag", parameters, options);
 
             //Get Dialog result
             var resultFromDialog = await dialog.Result;
