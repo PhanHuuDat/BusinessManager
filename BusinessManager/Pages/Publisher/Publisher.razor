@@ -1,6 +1,39 @@
 ﻿@page "/publisher"
-<h3>Publisher</h3>
+@using System.Net.Http.Json
+@using BusinessManager.Models.DTOs;
+@inject ISnackbar Snackbar
 
-@code {
+<PageTitle>Publisher List</PageTitle>
 
-}
+<MudTable Items="@elements" Hover="true" Striped="true" @bind-SelectedItem="selectedItem" Loading="isLoading"
+          Filter="new Func<PublisherDTO,bool>(FilterFunc)">
+    <LoadingContent>
+        <MudProgressCircular Color="Color.Default" Indeterminate="true" />
+    </LoadingContent>
+    <ToolBarContent>
+        <MudText Typo="Typo.h6">Publisher List</MudText>
+        <MudSpacer />
+        <MudTextField @bind-Value="searchString" Placeholder="Search" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
+        <MudIconButton Icon="@Icons.Material.Filled.Add" Variant="Variant.Filled" Color="Color.Primary" ButtonType="ButtonType.Button"
+                       @onclick="(e) => OpenUpsertDialog(new PublisherDTO())" />
+    </ToolBarContent>
+    <ColGroup>
+        <col />
+        <col style="width:80px;" />
+    </ColGroup>
+    <HeaderContent>
+        <MudTh>Name</MudTh>
+    </HeaderContent>
+    <RowTemplate>
+        <MudTd DataLabel="Name">@context.Name</MudTd>
+        <MudTd>
+            <div class="d-flex">
+                <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Outlined.Edit" Class="pa-0 flex-auto" @onclick="(e) => OpenUpsertDialog(context)" />
+                <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Outlined.Delete" Class="pa-0 flex-auto" @onclick="(e) => DeleteItemAsync(context)" />
+            </div>
+        </MudTd>
+    </RowTemplate>
+    <PagerContent>
+        <MudTablePager />
+    </PagerContent>
+</MudTable>
