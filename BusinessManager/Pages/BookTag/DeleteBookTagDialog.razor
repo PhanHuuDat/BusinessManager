@@ -20,14 +20,14 @@
 
     [Parameter] public Color Color { get; set; }
 
-    [Parameter] public int bookTagId { get; set; }
+    [Parameter] public int itemId { get; set; }
 
     private bool isDisabled = false;
 
     private async void Submit()
     {
         isDisabled = true;
-        var deleteResult = await UnitOfWork.BookTag.DeleteAsync(bookTagId);
+        var deleteResult = await UnitOfWork.BookTag.DeleteAsync(itemId);
         if (deleteResult)
         {
             Snackbar.Add("Deleted Successfully", Severity.Success);

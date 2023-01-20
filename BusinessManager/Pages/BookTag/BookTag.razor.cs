@@ -23,18 +23,18 @@ namespace BusinessManagerWeb.Pages.BookTag
             await base.OnAfterRenderAsync(firstRender);
             if (firstRender)
             {
+                isLoading = true;
+                StateHasChanged();
                 await GetItemListAsync();
+                isLoading = false;
+                StateHasChanged();
             }
         }
 
         private async Task GetItemListAsync()
         {
-            isLoading = true;
-            StateHasChanged();
             var enumerable = await unitOfWork.BookTag.GetAllAsync();
             elements = enumerable.ToList();
-            isLoading = false;
-            StateHasChanged();
         }
 
         private async Task OpenUpsertDialog(BookTagDTO? itemDTO)
