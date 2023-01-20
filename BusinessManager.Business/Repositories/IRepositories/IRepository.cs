@@ -13,5 +13,6 @@ namespace BusinessManager.Business.Repositories.IRepositories
             Func<IQueryable<U>, IOrderedQueryable<U>>? orderby = null,
             string? includeProperties = null);
         Task<T?> GetFirstOrDefaultAsync(Expression<Func<U, bool>>? filter = null, string? includeProperties = null);
+
     }
 }

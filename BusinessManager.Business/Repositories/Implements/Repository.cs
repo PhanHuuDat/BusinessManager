@@ -95,6 +95,7 @@ namespace BusinessManager.Business.Repositories.Implements
                 List<U> source = await orderby(query).ToListAsync();
                 return await Task.Run(() => _mapper.Map<IEnumerable<U>, IEnumerable<T>>(source));
             }
+            
             return _mapper.Map<IEnumerable<U>, IEnumerable<T>>(await query.ToListAsync());
         }
 
