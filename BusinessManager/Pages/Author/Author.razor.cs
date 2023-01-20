@@ -23,19 +23,18 @@ namespace BusinessManagerWeb.Pages.Author
             await base.OnAfterRenderAsync(firstRender);
             if (firstRender)
             {
-                await GetAuthorListAsync();
+                isLoading = true;
+                StateHasChanged();
+                await GetItemListAsync();
+                isLoading = false;
+                StateHasChanged();
             }
         }
 
-
-        private async Task GetAuthorListAsync()
+        private async Task GetItemListAsync()
         {
-            isLoading = true;
-            StateHasChanged();
             var enumerable = await UnitOfWork.Author.GetAllAsync();
             elements = enumerable.ToList();
-            isLoading = false;
-            StateHasChanged();
         }
 
         private async Task OpenUpsertDialog(AuthorDTO? itemDTO)
@@ -72,18 +71,18 @@ namespace BusinessManagerWeb.Pages.Author
             }
         }
 
-        private async Task DeleteAuthorAsync(AuthorDTO itemDTO)
+        private async Task DeleteItemAsync(AuthorDTO itemDTO)
         {
             //Setting Dialog
             var parameters = new DialogParameters
             {
-                { "ContentText", "Do you really want to delete this author? This process cannot be undone." },
+                { "ContentText", "Do you really want to delete this item? This process cannot be undone." },
                 { "ButtonText", "Delete" },
                 { "Color", Color.Error },
                 { "itemId", itemDTO.Id}
             };
             var options = new DialogOptions() { CloseButton = true, MaxWidth = MaxWidth.ExtraSmall };
-            var dialog = DialogService.Show<DeleteAuthorDialog>("Delete Author", parameters, options);
+            var dialog = DialogService.Show<DeleteAuthorDialog>("Delete Item", parameters, options);
 
             //Get Dialog result
             var resultFromDialog = await dialog.Result;

@@ -6,32 +6,32 @@
         {
             <MudText Typo="Typo.h6">
                 <MudIcon Icon="@Icons.Material.Filled.Add" Class="mr-3 mb-n1" />
-                Add Book Tag
+                Add Author
             </MudText>
         }
         else
         {
             <MudText Typo="Typo.h6">
                 <MudIcon Icon="@Icons.Material.Filled.Update" Class="mr-3 mb-n1" />
-                Update Book Tag
+                Update Author
             </MudText>
         }
     </TitleContent>
     <DialogContent>
-        <EditForm Model="item" OnValidSubmit="OnValidSubmit" id="add-book-tag">
+        <EditForm Model="item" OnValidSubmit="OnValidSubmit" id="add-author">
             <DataAnnotationsValidator />
-            <MudTextField Label="Book Tag" @bind-Value="item!.Name" For="@(() => item!.Name)" />
+            <MudTextField Label="Author" @bind-Value="item!.Name" For="@(() => item!.Name)" />
         </EditForm>
     </DialogContent>
     <DialogActions>
         <MudButton OnClick="Cancel" Disabled="isDisabled">Cancel</MudButton>
         @if (item!.Id == 0)
         {
-            <MudButton Color="Color.Primary" ButtonType="ButtonType.Submit" Disabled="isDisabled" form="add-book-tag">Add</MudButton>
+            <MudButton Color="Color.Primary" ButtonType="ButtonType.Submit" Disabled="isDisabled" form="add-author">Add</MudButton>
         }
         else
         {
-            <MudButton Color="Color.Primary" ButtonType="ButtonType.Submit" Disabled="isDisabled" form="add-book-tag">Update</MudButton>
+            <MudButton Color="Color.Primary" ButtonType="ButtonType.Submit" Disabled="isDisabled" form="add-author">Update</MudButton>
         }
     </DialogActions>
 </MudDialog>
@@ -39,14 +39,14 @@
     [CascadingParameter] MudDialogInstance MudDialog { get; set; }
     private bool isDisabled = false;
 
-    [Parameter] public BookTagDTO? item { get; set; } = new();
+    [Parameter] public AuthorDTO? item { get; set; } = new();
 
     private async void OnValidSubmit(EditContext editContext)
     {
         isDisabled = true;
         if (item!.Id == 0)
         {
-            item = await UnitOfWork.BookTag.CreateAsync(item);
+            item = await UnitOfWork.Author.CreateAsync(item);
             if (item != null)
             {
                 Snackbar.Add("Added Successfully", Severity.Success);
@@ -59,7 +59,7 @@
         }
         else
         {
-            item = await UnitOfWork.BookTag.UpdateAsync(item);
+            item = await UnitOfWork.Author.UpdateAsync(item);
             if (item != null)
             {
                 Snackbar.Add("Updated Successfully", Severity.Success);
