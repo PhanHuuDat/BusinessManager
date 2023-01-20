@@ -1,5 +1,78 @@
-﻿<h3>UpsertBookSize</h3>
-
+﻿@inject ISnackbar Snackbar
+@inject IUnitOfWork UnitOfWork
+<MudDialog>
+    <TitleContent>
+        @if (item!.Id == 0)
+        {
+            <MudText Typo="Typo.h6">
+                <MudIcon Icon="@Icons.Material.Filled.Add" Class="mr-3 mb-n1" />
+                Add Book Size
+            </MudText>
+        }
+        else
+        {
+            <MudText Typo="Typo.h6">
+                <MudIcon Icon="@Icons.Material.Filled.Update" Class="mr-3 mb-n1" />
+                Update Book Size
+            </MudText>
+        }
+    </TitleContent>
+    <DialogContent>
+        <EditForm Model="item" OnValidSubmit="OnValidSubmit" id="add-book-size">
+            <DataAnnotationsValidator />
+            <MudTextField Label="Book Size" @bind-Value="item!.SizeValue" For="@(() => item!.SizeValue)" />
+        </EditForm>
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="Cancel" Disabled="isDisabled">Cancel</MudButton>
+        @if (item!.Id == 0)
+        {
+            <MudButton Color="Color.Primary" ButtonType="ButtonType.Submit" Disabled="isDisabled" form="add-book-size">Add</MudButton>
+        }
+        else
+        {
+            <MudButton Color="Color.Primary" ButtonType="ButtonType.Submit" Disabled="isDisabled" form="add-book-size">Update</MudButton>
+        }
+    </DialogActions>
+</MudDialog>
 @code {
+    [CascadingParameter] MudDialogInstance MudDialog { get; set; }
+    private bool isDisabled = false;
 
+    [Parameter] public BookSizeDTO? item { get; set; } = new();
+
+    private async void OnValidSubmit(EditContext editContext)
+    {
+        isDisabled = true;
+        if (item!.Id == 0)
+        {
+            item = await UnitOfWork.BookSize.CreateAsync(item);
+            if (item != null)
+            {
+                Snackbar.Add("Added Successfully", Severity.Success);
+                await UnitOfWork.SaveAsync();
+            }
+            else
+            {
+                Snackbar.Add("Added Failed", Severity.Error);
+            }
+        }
+        else
+        {
+            item = await UnitOfWork.BookSize.UpdateAsync(item);
+            if (item != null)
+            {
+                Snackbar.Add("Updated Successfully", Severity.Success);
+                await UnitOfWork.SaveAsync();
+            }
+            else
+            {
+                Snackbar.Add("Updated Failed", Severity.Error);
+            }
+        }
+        isDisabled = false;
+        MudDialog.Close(DialogResult.Ok(item));
+    }
+
+    private void Cancel() => MudDialog.Cancel();
 }
