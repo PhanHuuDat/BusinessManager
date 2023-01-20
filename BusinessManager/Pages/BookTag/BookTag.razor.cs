@@ -70,7 +70,7 @@ namespace BusinessManagerWeb.Pages.BookTag
             }
         }
 
-        private async Task DeleteBookTagAsync(BookTagDTO itemDTO)
+        private async Task DeleteItemAsync(BookTagDTO itemDTO)
         {
             //Setting Dialog
             var parameters = new DialogParameters
