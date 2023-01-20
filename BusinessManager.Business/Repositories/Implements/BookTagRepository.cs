@@ -4,12 +4,6 @@ using BusinessManager.DataAccess.DAOs;
 using BusinessManager.DataAccess.Data;
 using BusinessManager.Models.DTOs;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BusinessManager.Business.Repositories.Implements
 {
@@ -30,7 +24,6 @@ namespace BusinessManager.Business.Repositories.Implements
                 objFromDb.Name = entity.Name;
                 objFromDb.UpdatedDate = DateTimeOffset.UtcNow;
                 var result = await Task.Run(() => _db.Update(objFromDb));
-                await _db.SaveChangesAsync();
                 return _mapper.Map<BookTagDTO>(result.Entity);
             }
 

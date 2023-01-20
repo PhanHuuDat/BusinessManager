@@ -21,7 +21,6 @@ namespace BusinessManager.Business.Repositories.Implements
 
         public IAuthorRepository Author { get; private set; }
         public IBookCostRepository BookCost { get; private set; }
-        public IBookImageRepository BookImage { get; private set; }
         public IBookRepository Book { get; private set; }
         public IBookSizeRepository BookSize { get; private set; }
         public IBookTagRepository BookTag { get; private set; }
@@ -33,6 +32,11 @@ namespace BusinessManager.Business.Repositories.Implements
         public async Task DisposeAsync()
         {
             await _db.DisposeAsync();
+        }
+
+        public async Task SaveAsync()
+        {
+            await _db.SaveChangesAsync();
         }
 
     }

@@ -17,7 +17,6 @@ namespace BusinessManager.DataAccess.Data
         }
         public DbSet<Author> Author { get; set; }
         public DbSet<BookCost> BookCost { get; set; }
-        public DbSet<BookImage> BookImage { get; set; }
         public DbSet<Book> Book { get; set; }
         public DbSet<BookSize> BookSize { get; set; }
         public DbSet<BookTag> BookTag { get; set; }

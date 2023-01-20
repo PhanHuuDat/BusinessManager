@@ -12,6 +12,8 @@ namespace BusinessManager.DataAccess.DAOs
         [StringLength(100)]
         public string Title { get; set; } = string.Empty;
 
+        public string Avatar { get; set; } = string.Empty;
+
         [Required]
         [StringLength(1000)]
         public string Description { get; set; } = string.Empty;
@@ -32,7 +34,6 @@ namespace BusinessManager.DataAccess.DAOs
         public int CoverFormId { get; set; }
         public CoverForm? CoverForm { get; set; }
         public DateTimeOffset PublishedDate { get; set; }
-        public ICollection<BookImage>? BookImages { get; set; }
         public ICollection<BookCost>? BookCosts { get; set; }
         public ICollection<BookTag>? BookTags { get; set; }
 

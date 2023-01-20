@@ -22,4 +22,9 @@
     <ProjectReference Include="..\BusinessManager.DataAccess\BusinessManager.DataAccess.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Pages\BookCost\" />
+    <Folder Include="Pages\Book\" />
+  </ItemGroup>
+
 </Project>

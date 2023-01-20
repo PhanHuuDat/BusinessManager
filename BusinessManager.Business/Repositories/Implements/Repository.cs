@@ -30,7 +30,7 @@ namespace BusinessManager.Business.Repositories.Implements
             try
             {
                 var result = await dbSet.AddAsync(obj);
-                await _db.SaveChangesAsync();
+
                 return _mapper.Map<T>(result.Entity);
             }
             catch (Exception ex)
@@ -47,7 +47,6 @@ namespace BusinessManager.Business.Repositories.Implements
             {
                 var existingEntity = await dbSet.FindAsync(entityId);
                 await Task.Run(() => dbSet.Remove(existingEntity!));
-                await _db.SaveChangesAsync();
                 return true;
             }
             return false;
@@ -64,8 +63,6 @@ namespace BusinessManager.Business.Repositories.Implements
                         await DeleteAsync(entityId);
                     });
                 });
-
-                await _db.SaveChangesAsync();
             }
             catch (Exception ex)
             {

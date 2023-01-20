@@ -1,5 +1,6 @@
 ﻿using BusinessManager.DataAccess.DAOs;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BusinessManager.Models.DTOs
 {
@@ -12,21 +13,19 @@ namespace BusinessManager.Models.DTOs
         [StringLength(100)]
         public string Title { get; set; } = string.Empty;
 
+        public string Avatar { get; set; } = string.Empty;
+
         [Required]
         [StringLength(1000)]
         public string Description { get; set; } = string.Empty;
-
-        [Required]
-        [StringLength(50)]
-        public string Author { get; set; } = string.Empty;
 
         [Range(1, int.MaxValue, ErrorMessage = "Please select a publisher")]
         public int PublisherId { get; set; }
         public Publisher? Publisher { get; set; }
 
-        [Range(1, int.MaxValue, ErrorMessage = "Please select a supplier")]
-        public int SupplierId { get; set; }
-        public Author? Supplier { get; set; }
+        [Range(1, int.MaxValue, ErrorMessage = "Please select an author")]
+        public int AuthorId { get; set; }
+        public Author? Author { get; set; }
 
         [Range(1, int.MaxValue, ErrorMessage = "Please select a book size")]
         public int BookSizeId { get; set; }
@@ -36,7 +35,6 @@ namespace BusinessManager.Models.DTOs
         public int CoverFormId { get; set; }
         public CoverForm? CoverForm { get; set; }
         public DateTimeOffset PublishedDate { get; set; }
-        public ICollection<BookImage>? BookImages { get; set; }
         public ICollection<BookCost>? BookCosts { get; set; }
         public ICollection<BookTag>? BookTags { get; set; }
     }

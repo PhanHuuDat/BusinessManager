@@ -1,4 +1,10 @@
 ﻿<MudNavMenu>
     <MudNavLink Href="" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Home">Home</MudNavLink>
-    <MudNavLink Href="book-tags" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Note">Book Tags</MudNavLink>
+    <MudNavGroup Icon="@Icons.Material.Filled.Book" Title="Book">
+        <MudNavLink Href="author" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Person">Author</MudNavLink>
+        <MudNavLink Href="book-size" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.CropFree">Book Size</MudNavLink>
+        <MudNavLink Href="book-tag" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Note">Book Tag</MudNavLink>
+        <MudNavLink Href="cover-form" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.LibraryBooks">Cover Form</MudNavLink>
+        <MudNavLink Href="publisher" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.HomeWork">Publisher</MudNavLink>
+    </MudNavGroup>
 </MudNavMenu>

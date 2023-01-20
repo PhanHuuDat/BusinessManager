@@ -3,19 +3,19 @@ using BusinessManager.Models.DTOs;
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
 
-namespace BusinessManagerWeb.Pages.BookTag
+namespace BusinessManagerWeb.Pages.Author
 {
-    public partial class BookTag
+    public partial class Author
     {
 
 #pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
-        [Inject] protected IUnitOfWork unitOfWork { get; set; }
+        [Inject] protected IUnitOfWork UnitOfWork { get; set; }
         [Inject] protected IDialogService DialogService { get; set; }
 #pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
 
         private string searchString = "";
-        private BookTagDTO selectedItem = new();
-        private List<BookTagDTO> elements = new();
+        private AuthorDTO selectedItem = new();
+        private List<AuthorDTO> elements = new();
         private bool isLoading = false;
 
         protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -23,26 +23,27 @@ namespace BusinessManagerWeb.Pages.BookTag
             await base.OnAfterRenderAsync(firstRender);
             if (firstRender)
             {
-                await GetItemListAsync();
+                await GetAuthorListAsync();
             }
         }
 
-        private async Task GetItemListAsync()
+
+        private async Task GetAuthorListAsync()
         {
             isLoading = true;
             StateHasChanged();
-            var enumerable = await unitOfWork.BookTag.GetAllAsync();
+            var enumerable = await UnitOfWork.Author.GetAllAsync();
             elements = enumerable.ToList();
             isLoading = false;
             StateHasChanged();
         }
 
-        private async Task OpenUpsertDialog(BookTagDTO? itemDTO)
+        private async Task OpenUpsertDialog(AuthorDTO? itemDTO)
         {
             //Setting Dialog
             var parameter = new DialogParameters { ["item"] = itemDTO };
             var options = new DialogOptions { DisableBackdropClick = true };
-            var dialog = await DialogService.ShowAsync<UpsertBookTagDialog>("", parameter, options);
+            var dialog = await DialogService.ShowAsync<UpsertAuthorDialog>("", parameter, options);
             //Get Dialog result
             var resultFromDialog = await dialog.Result;
 
@@ -50,7 +51,7 @@ namespace BusinessManagerWeb.Pages.BookTag
             if (!resultFromDialog.Canceled)
             {
                 //Get result when Dialog return ok
-                var result = (BookTagDTO?)resultFromDialog.Data;
+                var result = (AuthorDTO?)resultFromDialog.Data;
                 //Handle when return value have Id != 0 => valid data
                 if (result != null)
                 {
@@ -67,21 +68,22 @@ namespace BusinessManagerWeb.Pages.BookTag
                         await GetEntity(result);
                     }
                 }
+
             }
         }
 
-        private async Task DeleteBookTagAsync(BookTagDTO itemDTO)
+        private async Task DeleteAuthorAsync(AuthorDTO itemDTO)
         {
             //Setting Dialog
             var parameters = new DialogParameters
             {
-                { "ContentText", "Do you really want to delete this item? This process cannot be undone." },
+                { "ContentText", "Do you really want to delete this author? This process cannot be undone." },
                 { "ButtonText", "Delete" },
                 { "Color", Color.Error },
                 { "itemId", itemDTO.Id}
             };
             var options = new DialogOptions() { CloseButton = true, MaxWidth = MaxWidth.ExtraSmall };
-            var dialog = DialogService.Show<DeleteBookTagDialog>("Delete Item", parameters, options);
+            var dialog = DialogService.Show<DeleteAuthorDialog>("Delete Author", parameters, options);
 
             //Get Dialog result
             var resultFromDialog = await dialog.Result;
@@ -97,7 +99,7 @@ namespace BusinessManagerWeb.Pages.BookTag
             }
         }
 
-        private bool FilterFunc(BookTagDTO item)
+        private bool FilterFunc(AuthorDTO item)
         {
             if (string.IsNullOrWhiteSpace(searchString))
                 return true;
@@ -106,12 +108,12 @@ namespace BusinessManagerWeb.Pages.BookTag
             return false;
         }
 
-        private async Task GetEntity(BookTagDTO itemDTO)
+        private async Task GetEntity(AuthorDTO authorDTO)
         {
-            var data = await unitOfWork.BookTag.GetFirstOrDefaultAsync(tag => tag.Name == itemDTO.Name);
-            if (data != null)
+            var getData = await UnitOfWork.Author.GetFirstOrDefaultAsync(tag => tag.Name == authorDTO.Name);
+            if (getData != null)
             {
-                elements.Insert(0, data);
+                elements.Insert(0, getData);
             }
         }
     }
