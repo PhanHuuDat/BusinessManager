@@ -1,12 +1,6 @@
 ﻿using AutoMapper;
 using BusinessManager.Business.Repositories.IRepositories;
-using BusinessManager.DataAccess.DAOs;
 using BusinessManager.DataAccess.Data;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BusinessManager.Business.Repositories.Implements
 {
@@ -16,7 +10,13 @@ namespace BusinessManager.Business.Repositories.Implements
         public UnitOfWork(ApplicationDbContext db, IMapper mapper)
         {
             _db = db;
+            Author = new AuthorRepository(db, mapper);
+            BookCost= new BookCostRepository(db, mapper);
+            Book = new BookRepository(db, mapper);
+            BookSize = new BookSizeRepository(db, mapper);
             BookTag = new BookTagRepository(db, mapper);
+            CoverForm = new CoverFormRepository(db, mapper);
+            Publisher= new PublisherRepository(db, mapper);
         }
 
         public IAuthorRepository Author { get; private set; }
