@@ -12,6 +12,8 @@ namespace BusinessManager.DataAccess.DAOs
 
         [StringLength(150)]
         public string Address { get; set; } = string.Empty;
+        [DataType(DataType.PhoneNumber)]
+        [Phone]
         public string Phone { get; set; } = string.Empty;
         
         public ICollection<Book>? Books { get; set; }

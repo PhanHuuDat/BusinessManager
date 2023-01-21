@@ -19,13 +19,19 @@
     </ToolBarContent>
     <ColGroup>
         <col />
+        <col />
+        <col />
         <col style="width:80px;" />
     </ColGroup>
     <HeaderContent>
         <MudTh>Name</MudTh>
+        <MudTh>Address</MudTh>
+        <MudTh>Phone Number</MudTh>
     </HeaderContent>
     <RowTemplate>
         <MudTd DataLabel="Name">@context.Name</MudTd>
+        <MudTd DataLabel="Address">@context.Address</MudTd>
+        <MudTd DataLabel="Phone Number">@context.Phone</MudTd>
         <MudTd>
             <div class="d-flex">
                 <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Outlined.Edit" Class="pa-0 flex-auto" @onclick="(e) => OpenUpsertDialog(context)" />

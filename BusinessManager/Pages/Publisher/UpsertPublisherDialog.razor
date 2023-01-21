@@ -18,20 +18,22 @@
         }
     </TitleContent>
     <DialogContent>
-        <EditForm Model="item" OnValidSubmit="OnValidSubmit" id="add-book-tag">
+        <EditForm Model="item" OnValidSubmit="OnValidSubmit" id="add-publisher">
             <DataAnnotationsValidator />
-            <MudTextField Label="Publisher" @bind-Value="item!.Name" For="@(() => item!.Name)" />
+            <MudTextField Label="Name" @bind-Value="item!.Name" For="@(() => item!.Name)" />
+            <MudTextField Label="Address" @bind-Value="item!.Address" For="@(() => item!.Address)" />
+            <MudTextField Label="Phone" @bind-Value="item!.Phone" For="@(() => item!.Phone)" InputType="InputType.Telephone"/>
         </EditForm>
     </DialogContent>
     <DialogActions>
         <MudButton OnClick="Cancel" Disabled="isDisabled">Cancel</MudButton>
         @if (item!.Id == 0)
         {
-            <MudButton Color="Color.Primary" ButtonType="ButtonType.Submit" Disabled="isDisabled" form="add-book-tag">Add</MudButton>
+            <MudButton Color="Color.Primary" ButtonType="ButtonType.Submit" Disabled="isDisabled" form="add-publisher">Add</MudButton>
         }
         else
         {
-            <MudButton Color="Color.Primary" ButtonType="ButtonType.Submit" Disabled="isDisabled" form="add-book-tag">Update</MudButton>
+            <MudButton Color="Color.Primary" ButtonType="ButtonType.Submit" Disabled="isDisabled" form="add-publisher">Update</MudButton>
         }
     </DialogActions>
 </MudDialog>
