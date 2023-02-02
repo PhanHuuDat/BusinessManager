@@ -33,6 +33,8 @@ namespace BusinessManager.DataAccess.DAOs
         [ForeignKey("CoverForm")]
         public int CoverFormId { get; set; }
         public CoverForm? CoverForm { get; set; }
+        public double Price { get; set; }
+        public double Discount { get; set; }
         public DateTimeOffset PublishedDate { get; set; }
         public ICollection<BookCost>? BookCosts { get; set; }
         public ICollection<BookTag>? BookTags { get; set; }

@@ -4,6 +4,7 @@ using BusinessManager.DataAccess.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BusinessManager.DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230201033625_changeBookProp")]
+    partial class changeBookProp
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -76,6 +78,9 @@ namespace BusinessManager.DataAccess.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<double>("BookPrice")
+                        .HasColumnType("float");
+
                     b.Property<int>("BookSizeId")
                         .HasColumnType("int");
 
@@ -91,9 +96,6 @@ namespace BusinessManager.DataAccess.Migrations
                         .HasColumnType("nvarchar(1000)");
 
                     b.Property<double>("Discount")
-                        .HasColumnType("float");
-
-                    b.Property<double>("Price")
                         .HasColumnType("float");
 
                     b.Property<DateTimeOffset>("PublishedDate")

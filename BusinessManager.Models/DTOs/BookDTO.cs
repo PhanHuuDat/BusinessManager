@@ -34,6 +34,8 @@ namespace BusinessManager.Models.DTOs
         [Range(1, int.MaxValue, ErrorMessage = "Please select a cover form")]
         public int CoverFormId { get; set; }
         public CoverForm? CoverForm { get; set; }
+        public double Price { get; set; }
+        public double Discount { get; set; }
         public DateTimeOffset PublishedDate { get; set; }
         public ICollection<BookCost>? BookCosts { get; set; }
         public ICollection<BookTag>? BookTags { get; set; }
