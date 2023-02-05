@@ -16,11 +16,14 @@
     else
     {
         <MudItem xs="8">
-            <MudPaper Class="mud-width-full py-4">
+            <MudPaper Class="mud-width-full">
                 <EditForm Model="Book" OnValidSubmit="OnValidSubmit">
                     <DataAnnotationsValidator />
-                    <MudTextField Label="Title" @bind-Value="Book!.Title" For="@(() => Book!.Title)" />
-                    <MudSelect T="int?" Required="true" @bind-Value="Book.AuthorId"
+                    <MudPaper Class="py-2">
+                        <MudTextField Label="Title" @bind-Value="Book!.Title" For="@(() => Book!.Title)" />
+                    </MudPaper>
+                   
+                    <MudSelect T="int?" Required="true" @bind-Value="Book.AuthorId" 
                            Label="Author" AnchorOrigin="Origin.BottomCenter" For="@(() =>Book!.AuthorId)">
                         @foreach (var author in authors)
                         {
@@ -60,7 +63,7 @@
         </MudItem>
 
         <MudItem xs="4">
-            <MudPaper Class="mud-width-full  py-4">
+            <MudPaper Class="mud-width-full  py-2">
                 <MudImage Src="@Book.Avatar" Class="mud-width-full" />
             </MudPaper>
         </MudItem>
