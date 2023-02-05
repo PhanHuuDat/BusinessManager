@@ -34,6 +34,7 @@ namespace BusinessManager.Models.DTOs
         public double Discount { get; set; }
         public DateTimeOffset PublishedDate { get; set; }
         public IEnumerable<BookCostDTO>? BookCosts { get; set; }
+        [Required, MinLength(1)]
         public IEnumerable<BookTagDTO>? BookTags { get; set; }
     }
 }

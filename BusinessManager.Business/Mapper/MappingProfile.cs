@@ -12,7 +12,6 @@ namespace BusinessManager.Business.Mapper
             CreateMap<BookCost, BookCostDTO>().ReverseMap();
             CreateMap<BookSize, BookSizeDTO>().ReverseMap();
             CreateMap<BookTag, BookTagDTO>().ReverseMap();
-            CreateMap<CoverForm, CoverFormDTO>().ReverseMap();
             CreateMap<Publisher, PublisherDTO>().ReverseMap();
             CreateMap<Author, AuthorDTO>().ReverseMap();
         }

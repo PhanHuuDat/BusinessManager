@@ -15,7 +15,6 @@ namespace BusinessManager.Business.Repositories.Implements
             Book = new BookRepository(db, mapper);
             BookSize = new BookSizeRepository(db, mapper);
             BookTag = new BookTagRepository(db, mapper);
-            CoverForm = new CoverFormRepository(db, mapper);
             Publisher= new PublisherRepository(db, mapper);
         }
 
@@ -24,7 +23,6 @@ namespace BusinessManager.Business.Repositories.Implements
         public IBookRepository Book { get; private set; }
         public IBookSizeRepository BookSize { get; private set; }
         public IBookTagRepository BookTag { get; private set; }
-        public ICoverFormRepository CoverForm { get; private set; }
         public IPublisherRepository Publisher { get; private set; }
 
         public void Dispose() => _db.Dispose();
