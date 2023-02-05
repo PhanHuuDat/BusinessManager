@@ -34,14 +34,13 @@
                             <MudSelectItem Value="@bookSize.Id">@bookSize.SizeValue</MudSelectItem>
                         }
                     </MudSelect>
-                    <MudSelect T="int?" Required="true" @bind-Value="Book.CoverFormId"
-                           Label="Cover Form" AnchorOrigin="Origin.BottomCenter" For="@(() =>Book!.CoverFormId)">
-                        @foreach (var coverForm in coverForms)
+                    <MudSelect T="BookTagDTO" Clearable="true" Required="true" @bind-Value="value" @bind-SelectedValues="Book.BookTags" 
+                           MultiSelection="true" Label="Book Tags" AnchorOrigin="Origin.BottomCenter">
+                        @foreach (var bookTag in bookTags)
                         {
-                            <MudSelectItem Value="@coverForm.Id">@coverForm.CoverName</MudSelectItem>
+                            <MudSelectItem Value="@bookTag"/>
                         }
                     </MudSelect>
-                    
                 </EditForm>
             </MudPaper>
         </MudItem>
@@ -63,11 +62,12 @@
         {
             Avatar = "/images/default.jpg"
         };
+    private BookTagDTO value { get; set; }
+
     private IEnumerable<AuthorDTO> authors = Enumerable.Empty<AuthorDTO>();
     private IEnumerable<BookSizeDTO> bookSizes = Enumerable.Empty<BookSizeDTO>();
     private IEnumerable<BookTagDTO> bookTags = Enumerable.Empty<BookTagDTO>();
-    private IEnumerable<CoverFormDTO> coverForms = Enumerable.Empty<CoverFormDTO>();
-
+    
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         await base.OnAfterRenderAsync(firstRender);
@@ -78,7 +78,6 @@
             authors = await UnitOfWork.Author.GetAllAsync();
             bookSizes = await UnitOfWork.BookSize.GetAllAsync();
             bookTags = await UnitOfWork.BookTag.GetAllAsync();
-            coverForms = await UnitOfWork.CoverForm.GetAllAsync();
             isLoading = false;
             StateHasChanged();
         }
@@ -89,6 +88,5 @@
     {
 
     }
-
 
 }

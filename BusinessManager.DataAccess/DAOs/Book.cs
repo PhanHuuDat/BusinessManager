@@ -29,10 +29,6 @@ namespace BusinessManager.DataAccess.DAOs
         [ForeignKey("BookSize")]
         public int BookSizeId { get; set; }
         public BookSize? BookSize { get; set; }
-
-        [ForeignKey("CoverForm")]
-        public int CoverFormId { get; set; }
-        public CoverForm? CoverForm { get; set; }
         public double Price { get; set; }
         public double Discount { get; set; }
         public DateTimeOffset PublishedDate { get; set; }

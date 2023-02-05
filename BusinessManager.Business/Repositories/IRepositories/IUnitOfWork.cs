@@ -7,7 +7,6 @@
         IBookRepository Book { get; }
         IBookSizeRepository BookSize { get; }
         IBookTagRepository BookTag { get; }
-        ICoverFormRepository CoverForm { get; }
         IPublisherRepository Publisher { get; }
 
         Task SaveAsync();

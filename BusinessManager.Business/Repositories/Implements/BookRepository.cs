@@ -27,7 +27,6 @@ namespace BusinessManager.Business.Repositories.Implements
                 obj.Description = entity.Description;
                 obj.Avatar = entity.Avatar;
                 obj.AuthorId = entity.AuthorId??0;
-                obj.CoverFormId = entity.CoverFormId??0;
                 obj.PublisherId = entity.PublisherId??0;
                 obj.BookSizeId = entity.BookSizeId??0;
                 obj.Price = entity.Price;
