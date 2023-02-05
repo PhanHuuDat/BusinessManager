@@ -31,7 +31,7 @@ namespace BusinessManager.DataAccess.DAOs
         public BookSize? BookSize { get; set; }
         public double Price { get; set; }
         public double Discount { get; set; }
-        public DateTimeOffset PublishedDate { get; set; }
+        public DateTime PublishedDate { get; set; }
         public ICollection<BookCost>? BookCosts { get; set; }
         public ICollection<BookTag>? BookTags { get; set; }
 
