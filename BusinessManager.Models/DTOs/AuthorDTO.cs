@@ -5,7 +5,7 @@ namespace BusinessManager.Models.DTOs
 {
     public class AuthorDTO : BaseDTO
     {
-        public int Id { get; set; }
+        public int? Id { get; set; }
 
         [Required]
         [StringLength(50)]

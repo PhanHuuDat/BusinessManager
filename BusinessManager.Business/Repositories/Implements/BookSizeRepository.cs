@@ -3,6 +3,7 @@ using BusinessManager.Business.Repositories.IRepositories;
 using BusinessManager.DataAccess.DAOs;
 using BusinessManager.DataAccess.Data;
 using BusinessManager.Models.DTOs;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,9 +19,19 @@ namespace BusinessManager.Business.Repositories.Implements
         {
 
         }
-        public Task<BookSizeDTO?> UpdateAsync(BookSizeDTO entity)
+        public async Task<BookSizeDTO?> UpdateAsync(BookSizeDTO entity)
         {
-            throw new NotImplementedException();
+            var objFromDb = await _db.BookSize.FirstOrDefaultAsync(c => c.Id == entity.Id);
+
+            if (objFromDb != null)
+            {
+                objFromDb.SizeValue = entity.SizeValue;
+                objFromDb.UpdatedDate = DateTimeOffset.UtcNow;
+                var result = await Task.Run(() => _db.Update(objFromDb));
+                return _mapper.Map<BookSizeDTO>(result.Entity);
+            }
+
+            return null;
         }
     }
 }

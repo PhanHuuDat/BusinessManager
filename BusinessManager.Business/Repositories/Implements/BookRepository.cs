@@ -20,16 +20,16 @@ namespace BusinessManager.Business.Repositories.Implements
         }
         public async Task<BookDTO?> UpdateAsync(BookDTO entity)
         {
-            var obj = await _db.Book.FirstOrDefaultAsync(book => book.ID == entity.ID);
+            var obj = await _db.Book.FirstOrDefaultAsync(book => book.ID == entity.Id);
             if (obj != null)
             {
                 obj.Title = entity.Title;
                 obj.Description = entity.Description;
                 obj.Avatar = entity.Avatar;
-                obj.AuthorId = entity.AuthorId;
-                obj.CoverFormId = entity.CoverFormId;
-                obj.PublisherId = entity.PublisherId;
-                obj.BookSizeId = entity.BookSizeId;
+                obj.AuthorId = entity.AuthorId??0;
+                obj.CoverFormId = entity.CoverFormId??0;
+                obj.PublisherId = entity.PublisherId??0;
+                obj.BookSizeId = entity.BookSizeId??0;
                 obj.Price = entity.Price;
                 obj.Discount = entity.Discount;
                 obj.PublishedDate = entity.PublishedDate;
