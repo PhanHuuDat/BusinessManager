@@ -1,6 +1,8 @@
 using BusinessManager.Business.Repositories.Implements;
 using BusinessManager.Business.Repositories.IRepositories;
 using BusinessManager.DataAccess.Data;
+using BusinessManagerWeb.Services;
+using BusinessManagerWeb.Services.IService;
 using Microsoft.AspNetCore.Hosting.StaticWebAssets;
 using Microsoft.EntityFrameworkCore;
 using MudBlazor.Services;
@@ -13,6 +15,7 @@ StaticWebAssetsLoader.UseStaticWebAssets(builder.Environment, builder.Configurat
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+builder.Services.AddScoped<IFileUpload, FileUpload>();
 builder.Services.AddMudServices();
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
