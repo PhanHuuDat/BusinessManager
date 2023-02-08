@@ -49,13 +49,13 @@
                         }
                     </MudSelect>
                     @*Book Tag*@
-                    <MudSelect T="BookTagDTO" Clearable="true" Required="true" @bind-SelectedValues="Book.BookTags"
+                    @*<MudSelect T="BookTagDTO" Clearable="true" Required="true" @bind-SelectedValues="Book.BookBookTags"
                            MultiSelection="true" Label="Book Tags" AnchorOrigin="Origin.BottomCenter">
                         @foreach (var bookTag in bookTags)
                         {
                             <MudSelectItem Value="@bookTag" />
                         }
-                    </MudSelect>
+                    </MudSelect>*@
                     @*Price*@
                     <MudTextField @bind-Value="@Book.Price" For="@(()=> Book!.Price)" Label="Price" InputType="InputType.Number"
                               Variant="Variant.Text" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.AttachMoney" />

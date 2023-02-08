@@ -113,24 +113,24 @@ namespace BusinessManager.DataAccess.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "BookBookTag",
+                name: "BookBookTags",
                 columns: table => new
                 {
-                    BookTagsId = table.Column<int>(type: "int", nullable: false),
-                    BooksId = table.Column<int>(type: "int", nullable: false)
+                    BookId = table.Column<int>(type: "int", nullable: false),
+                    BookTagId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_BookBookTag", x => new { x.BookTagsId, x.BooksId });
+                    table.PrimaryKey("PK_BookBookTags", x => new { x.BookId, x.BookTagId });
                     table.ForeignKey(
-                        name: "FK_BookBookTag_Book_BooksId",
-                        column: x => x.BooksId,
+                        name: "FK_BookBookTags_Book_BookId",
+                        column: x => x.BookId,
                         principalTable: "Book",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_BookBookTag_BookTag_BookTagsId",
-                        column: x => x.BookTagsId,
+                        name: "FK_BookBookTags_BookTag_BookTagId",
+                        column: x => x.BookTagId,
                         principalTable: "BookTag",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -176,9 +176,9 @@ namespace BusinessManager.DataAccess.Migrations
                 column: "PublisherId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_BookBookTag_BooksId",
-                table: "BookBookTag",
-                column: "BooksId");
+                name: "IX_BookBookTags_BookTagId",
+                table: "BookBookTags",
+                column: "BookTagId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_BookCost_BookId",
@@ -189,7 +189,7 @@ namespace BusinessManager.DataAccess.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "BookBookTag");
+                name: "BookBookTags");
 
             migrationBuilder.DropTable(
                 name: "BookCost");

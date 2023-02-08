@@ -4,12 +4,7 @@ using BusinessManager.DataAccess.DAOs;
 using BusinessManager.DataAccess.Data;
 using BusinessManager.Models.DTOs;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BusinessManager.Business.Repositories.Implements
 {
@@ -43,6 +38,7 @@ namespace BusinessManager.Business.Repositories.Implements
 
         public async Task<bool> DeleteAsync(int entityId)
         {
+            
             if (entityId != 0)
             {
                 var existingEntity = await dbSet.FindAsync(entityId);
@@ -101,6 +97,7 @@ namespace BusinessManager.Business.Repositories.Implements
 
         public async Task<T?> GetFirstOrDefaultAsync(Expression<Func<U, bool>>? filter = null, string? includeProperties = null)
         {
+            
             IQueryable<U> query = dbSet;
             if (filter != null)
             {

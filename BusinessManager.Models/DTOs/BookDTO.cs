@@ -39,6 +39,6 @@ namespace BusinessManager.Models.DTOs
         public DateTime? PublishedDate { get; set; }
         public IEnumerable<BookCostDTO>? BookCosts { get; set; }
         [Required, MinLength(1)]
-        public IEnumerable<BookTagDTO>? BookTags { get; set; }
+        public IEnumerable<BookBookTagDTO>? BookBookTags { get; set; }
     }
 }

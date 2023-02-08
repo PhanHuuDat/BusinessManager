@@ -106,10 +106,12 @@ namespace BusinessManager.DataAccess.Migrations
             modelBuilder.Entity("BusinessManager.DataAccess.DAOs.BookBookTag", b =>
                 {
                     b.Property<int>("BookId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnOrder(0);
 
                     b.Property<int>("BookTagId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnOrder(1);
 
                     b.HasKey("BookId", "BookTagId");
 

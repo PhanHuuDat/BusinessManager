@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BusinessManager.DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230208060435_initDb")]
+    [Migration("20230208082256_initDb")]
     partial class initDb
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -23,21 +23,6 @@ namespace BusinessManager.DataAccess.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
-
-            modelBuilder.Entity("BookBookTag", b =>
-                {
-                    b.Property<int>("BookTagsId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("BooksId")
-                        .HasColumnType("int");
-
-                    b.HasKey("BookTagsId", "BooksId");
-
-                    b.HasIndex("BooksId");
-
-                    b.ToTable("BookBookTag");
-                });
 
             modelBuilder.Entity("BusinessManager.DataAccess.DAOs.Author", b =>
                 {
@@ -118,6 +103,23 @@ namespace BusinessManager.DataAccess.Migrations
                     b.HasIndex("PublisherId");
 
                     b.ToTable("Book");
+                });
+
+            modelBuilder.Entity("BusinessManager.DataAccess.DAOs.BookBookTag", b =>
+                {
+                    b.Property<int>("BookId")
+                        .HasColumnType("int")
+                        .HasColumnOrder(0);
+
+                    b.Property<int>("BookTagId")
+                        .HasColumnType("int")
+                        .HasColumnOrder(1);
+
+                    b.HasKey("BookId", "BookTagId");
+
+                    b.HasIndex("BookTagId");
+
+                    b.ToTable("BookBookTags");
                 });
 
             modelBuilder.Entity("BusinessManager.DataAccess.DAOs.BookCost", b =>
@@ -234,21 +236,6 @@ namespace BusinessManager.DataAccess.Migrations
                     b.ToTable("Publisher");
                 });
 
-            modelBuilder.Entity("BookBookTag", b =>
-                {
-                    b.HasOne("BusinessManager.DataAccess.DAOs.BookTag", null)
-                        .WithMany()
-                        .HasForeignKey("BookTagsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("BusinessManager.DataAccess.DAOs.Book", null)
-                        .WithMany()
-                        .HasForeignKey("BooksId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("BusinessManager.DataAccess.DAOs.Book", b =>
                 {
                     b.HasOne("BusinessManager.DataAccess.DAOs.Author", "Author")
@@ -276,6 +263,25 @@ namespace BusinessManager.DataAccess.Migrations
                     b.Navigation("Publisher");
                 });
 
+            modelBuilder.Entity("BusinessManager.DataAccess.DAOs.BookBookTag", b =>
+                {
+                    b.HasOne("BusinessManager.DataAccess.DAOs.Book", "Book")
+                        .WithMany("BookBookTags")
+                        .HasForeignKey("BookId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("BusinessManager.DataAccess.DAOs.BookTag", "BookTag")
+                        .WithMany("BookBookTags")
+                        .HasForeignKey("BookTagId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Book");
+
+                    b.Navigation("BookTag");
+                });
+
             modelBuilder.Entity("BusinessManager.DataAccess.DAOs.BookCost", b =>
                 {
                     b.HasOne("BusinessManager.DataAccess.DAOs.Book", "Book")
@@ -294,12 +300,19 @@ namespace BusinessManager.DataAccess.Migrations
 
             modelBuilder.Entity("BusinessManager.DataAccess.DAOs.Book", b =>
                 {
+                    b.Navigation("BookBookTags");
+
                     b.Navigation("BookCosts");
                 });
 
             modelBuilder.Entity("BusinessManager.DataAccess.DAOs.BookSize", b =>
                 {
                     b.Navigation("Books");
+                });
+
+            modelBuilder.Entity("BusinessManager.DataAccess.DAOs.BookTag", b =>
+                {
+                    b.Navigation("BookBookTags");
                 });
 
             modelBuilder.Entity("BusinessManager.DataAccess.DAOs.Publisher", b =>
