@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BusinessManager.DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230201033625_changeBookProp")]
-    partial class changeBookProp
+    [Migration("20230208060435_initDb")]
+    partial class initDb
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -29,12 +29,12 @@ namespace BusinessManager.DataAccess.Migrations
                     b.Property<int>("BookTagsId")
                         .HasColumnType("int");
 
-                    b.Property<int>("BooksID")
+                    b.Property<int>("BooksId")
                         .HasColumnType("int");
 
-                    b.HasKey("BookTagsId", "BooksID");
+                    b.HasKey("BookTagsId", "BooksId");
 
-                    b.HasIndex("BooksID");
+                    b.HasIndex("BooksId");
 
                     b.ToTable("BookBookTag");
                 });
@@ -65,11 +65,11 @@ namespace BusinessManager.DataAccess.Migrations
 
             modelBuilder.Entity("BusinessManager.DataAccess.DAOs.Book", b =>
                 {
-                    b.Property<int>("ID")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<int>("AuthorId")
                         .HasColumnType("int");
@@ -78,13 +78,7 @@ namespace BusinessManager.DataAccess.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<double>("BookPrice")
-                        .HasColumnType("float");
-
                     b.Property<int>("BookSizeId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("CoverFormId")
                         .HasColumnType("int");
 
                     b.Property<DateTimeOffset>("CreatedDate")
@@ -98,8 +92,11 @@ namespace BusinessManager.DataAccess.Migrations
                     b.Property<double>("Discount")
                         .HasColumnType("float");
 
-                    b.Property<DateTimeOffset>("PublishedDate")
-                        .HasColumnType("datetimeoffset");
+                    b.Property<double>("Price")
+                        .HasColumnType("float");
+
+                    b.Property<DateTime>("PublishedDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<int>("PublisherId")
                         .HasColumnType("int");
@@ -112,13 +109,11 @@ namespace BusinessManager.DataAccess.Migrations
                     b.Property<DateTimeOffset>("UpdatedDate")
                         .HasColumnType("datetimeoffset");
 
-                    b.HasKey("ID");
+                    b.HasKey("Id");
 
                     b.HasIndex("AuthorId");
 
                     b.HasIndex("BookSizeId");
-
-                    b.HasIndex("CoverFormId");
 
                     b.HasIndex("PublisherId");
 
@@ -206,30 +201,6 @@ namespace BusinessManager.DataAccess.Migrations
                     b.ToTable("BookTag");
                 });
 
-            modelBuilder.Entity("BusinessManager.DataAccess.DAOs.CoverForm", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<string>("CoverName")
-                        .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
-
-                    b.Property<DateTimeOffset>("CreatedDate")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<DateTimeOffset>("UpdatedDate")
-                        .HasColumnType("datetimeoffset");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("CoverForm");
-                });
-
             modelBuilder.Entity("BusinessManager.DataAccess.DAOs.Publisher", b =>
                 {
                     b.Property<int>("Id")
@@ -273,7 +244,7 @@ namespace BusinessManager.DataAccess.Migrations
 
                     b.HasOne("BusinessManager.DataAccess.DAOs.Book", null)
                         .WithMany()
-                        .HasForeignKey("BooksID")
+                        .HasForeignKey("BooksId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -292,12 +263,6 @@ namespace BusinessManager.DataAccess.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("BusinessManager.DataAccess.DAOs.CoverForm", "CoverForm")
-                        .WithMany("Books")
-                        .HasForeignKey("CoverFormId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("BusinessManager.DataAccess.DAOs.Publisher", "Publisher")
                         .WithMany("Books")
                         .HasForeignKey("PublisherId")
@@ -307,8 +272,6 @@ namespace BusinessManager.DataAccess.Migrations
                     b.Navigation("Author");
 
                     b.Navigation("BookSize");
-
-                    b.Navigation("CoverForm");
 
                     b.Navigation("Publisher");
                 });
@@ -335,11 +298,6 @@ namespace BusinessManager.DataAccess.Migrations
                 });
 
             modelBuilder.Entity("BusinessManager.DataAccess.DAOs.BookSize", b =>
-                {
-                    b.Navigation("Books");
-                });
-
-            modelBuilder.Entity("BusinessManager.DataAccess.DAOs.CoverForm", b =>
                 {
                     b.Navigation("Books");
                 });

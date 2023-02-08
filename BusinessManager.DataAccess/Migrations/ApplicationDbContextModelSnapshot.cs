@@ -27,12 +27,12 @@ namespace BusinessManager.DataAccess.Migrations
                     b.Property<int>("BookTagsId")
                         .HasColumnType("int");
 
-                    b.Property<int>("BooksID")
+                    b.Property<int>("BooksId")
                         .HasColumnType("int");
 
-                    b.HasKey("BookTagsId", "BooksID");
+                    b.HasKey("BookTagsId", "BooksId");
 
-                    b.HasIndex("BooksID");
+                    b.HasIndex("BooksId");
 
                     b.ToTable("BookBookTag");
                 });
@@ -63,11 +63,11 @@ namespace BusinessManager.DataAccess.Migrations
 
             modelBuilder.Entity("BusinessManager.DataAccess.DAOs.Book", b =>
                 {
-                    b.Property<int>("ID")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<int>("AuthorId")
                         .HasColumnType("int");
@@ -107,7 +107,7 @@ namespace BusinessManager.DataAccess.Migrations
                     b.Property<DateTimeOffset>("UpdatedDate")
                         .HasColumnType("datetimeoffset");
 
-                    b.HasKey("ID");
+                    b.HasKey("Id");
 
                     b.HasIndex("AuthorId");
 
@@ -178,7 +178,10 @@ namespace BusinessManager.DataAccess.Migrations
             modelBuilder.Entity("BusinessManager.DataAccess.DAOs.BookTag", b =>
                 {
                     b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<DateTimeOffset>("CreatedDate")
                         .HasColumnType("datetimeoffset");
@@ -239,7 +242,7 @@ namespace BusinessManager.DataAccess.Migrations
 
                     b.HasOne("BusinessManager.DataAccess.DAOs.Book", null)
                         .WithMany()
-                        .HasForeignKey("BooksID")
+                        .HasForeignKey("BooksId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

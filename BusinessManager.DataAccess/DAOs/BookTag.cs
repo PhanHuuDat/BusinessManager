@@ -6,7 +6,6 @@ namespace BusinessManager.DataAccess.DAOs
     public class BookTag : BaseDAO
     {
         [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int Id { get; set; }
 
         [Required]
