@@ -4,7 +4,7 @@ namespace BusinessManager.Models.DTOs
 {
     public class BookTagDTO : BaseDTO
     {
-        public int Id { get; set; }
+        public int? Id { get; set; } = 0;
 
         [Required]
         public string Name { get; set; } = string.Empty;

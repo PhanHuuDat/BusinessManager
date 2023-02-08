@@ -6,7 +6,6 @@ namespace BusinessManager.Models.DTOs
 {
     public class BookDTO : BaseDTO
     {
-        [Key]
         public int Id { get; set; }
 
         [Required]

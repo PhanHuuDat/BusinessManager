@@ -32,7 +32,6 @@ namespace BusinessManager.Business.Repositories.Implements
                 obj.Price = entity.Price;
                 obj.Discount = entity.Discount;
                 obj.PublishedDate = entity.PublishedDate??DateTime.Now;
-                obj.BookTags = (ICollection<BookTag>?)entity.BookTags;
                 obj.UpdatedDate = DateTimeOffset.UtcNow;
                 return _mapper.Map<BookDTO>(obj);
             }

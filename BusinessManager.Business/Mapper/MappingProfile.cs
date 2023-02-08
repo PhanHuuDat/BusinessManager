@@ -8,7 +8,7 @@ namespace BusinessManager.Business.Mapper
     {
         public MappingProfile()
         {
-            CreateMap<Book, BookDTO>().ForMember(des => des.BookTags, act => act.MapFrom(src => src.BookTags)).ReverseMap();
+            CreateMap<Book, BookDTO>().ReverseMap();
             CreateMap<BookCost, BookCostDTO>().ReverseMap();
             CreateMap<BookSize, BookSizeDTO>().ReverseMap();
             CreateMap<BookTag, BookTagDTO>().ReverseMap();

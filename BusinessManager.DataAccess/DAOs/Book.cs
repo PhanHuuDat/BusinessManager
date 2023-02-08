@@ -32,8 +32,7 @@ namespace BusinessManager.DataAccess.DAOs
         public double Price { get; set; }
         public double Discount { get; set; }
         public DateTime PublishedDate { get; set; }
-        public ICollection<BookCost>? BookCosts { get; set; }
-        public ICollection<BookTag>? BookTags { get; set; }
-
+        public ICollection<BookCost> BookCosts { get; set; }
+        public IList<BookBookTag> BookBookTags { get; set; }
     }
 }

@@ -82,21 +82,21 @@
         <MudItem xs="4">
             <MudPaper Class="mud-width-full">
                 <MudImage Src="@Book.Avatar" Class="mud-width-full" />
-                
+
             </MudPaper>
             <div class="d-flex align-center justify-center py-2">
-                    <MudFileUpload T="IBrowserFile" OnFilesChanged="HandleImageUpload">
-                        <ButtonTemplate Context="file">
-                            <MudButton HtmlTag="label"
-                                   Variant="Variant.Filled"
-                                   Color="Color.Primary"
-                                   StartIcon="@Icons.Material.Filled.CloudUpload"
-                                   for="@file">
-                                Upload Files
-                            </MudButton>
-                        </ButtonTemplate>
-                    </MudFileUpload>
-                </div>
+                <MudFileUpload T="IBrowserFile" OnFilesChanged="HandleImageUpload">
+                    <ButtonTemplate Context="file">
+                        <MudButton HtmlTag="label"
+                               Variant="Variant.Filled"
+                               Color="Color.Primary"
+                               StartIcon="@Icons.Material.Filled.CloudUpload"
+                               for="@file">
+                            Upload Files
+                        </MudButton>
+                    </ButtonTemplate>
+                </MudFileUpload>
+            </div>
         </MudItem>
 
     }
