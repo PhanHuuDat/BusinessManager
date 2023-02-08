@@ -13,6 +13,7 @@ namespace BusinessManager.Models.DTOs
         [StringLength(100)]
         public string Title { get; set; } = string.Empty;
 
+        [Required]
         public string Avatar { get; set; } = string.Empty;
 
         [Required]
@@ -30,7 +31,10 @@ namespace BusinessManager.Models.DTOs
         [Range(1, int.MaxValue, ErrorMessage = "Please select a book size")]
         public int? BookSizeId { get; set; }
         public BookSize? BookSize { get; set; }
+        [Required]
         public double Price { get; set; }
+        [Required]
+        [Range(0, 100)]
         public double Discount { get; set; }
         [Required]
         public DateTime? PublishedDate { get; set; }

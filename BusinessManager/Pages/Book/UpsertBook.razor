@@ -1,8 +1,11 @@
 ﻿@page "/books/create"
 @page "/books/update/{id:int}"
 @inject IUnitOfWork UnitOfWork
+@inject ISnackbar Snackbar
+@inject IFileUpload FileUpload
+@inject NavigationManager NavigationManager
 
-<h3>UpsertBook</h3>
+<MudText Typo="Typo.h3">@Title Book</MudText>
 
 <MudGrid>
     @if (isLoading)
@@ -16,20 +19,20 @@
     else
     {
         <MudItem xs="8">
-            <MudPaper Class="mud-width-full">
+            <MudPaper Class="pa-4">
                 <EditForm Model="Book" OnValidSubmit="OnValidSubmit">
                     <DataAnnotationsValidator />
-                    <MudPaper Class="py-2">
-                        <MudTextField Label="Title" @bind-Value="Book!.Title" For="@(() => Book!.Title)" />
-                    </MudPaper>
-                   
-                    <MudSelect T="int?" Required="true" @bind-Value="Book.AuthorId" 
+                    @*Title*@
+                    <MudTextField Label="Title" @bind-Value="Book!.Title" For="@(() => Book!.Title)" />
+                    @*Author*@
+                    <MudSelect T="int?" Required="true" @bind-Value="Book.AuthorId"
                            Label="Author" AnchorOrigin="Origin.BottomCenter" For="@(() =>Book!.AuthorId)">
                         @foreach (var author in authors)
                         {
                             <MudSelectItem Value="@author.Id">@author.Name</MudSelectItem>
                         }
                     </MudSelect>
+                    @*Publisher*@
                     <MudSelect T="int?" Required="true" @bind-Value="Book.PublisherId"
                            Label="Publisher" AnchorOrigin="Origin.BottomCenter" For="@(() =>Book!.PublisherId)">
                         @foreach (var publisher in publishers)
@@ -37,6 +40,7 @@
                             <MudSelectItem Value="@publisher.Id">@publisher.Name</MudSelectItem>
                         }
                     </MudSelect>
+                    @*Book Size*@
                     <MudSelect T="int?" Required="true" @bind-Value="Book.BookSizeId"
                            Label="Book Size" AnchorOrigin="Origin.BottomCenter" For="@(() =>Book!.BookSizeId)">
                         @foreach (var bookSize in bookSizes)
@@ -44,29 +48,57 @@
                             <MudSelectItem Value="@bookSize.Id">@bookSize.SizeValue</MudSelectItem>
                         }
                     </MudSelect>
-                    <MudSelect T="BookTagDTO" Clearable="true" Required="true" @bind-SelectedValues="Book.BookTags" 
+                    @*Book Tag*@
+                    <MudSelect T="BookTagDTO" Clearable="true" Required="true" @bind-SelectedValues="Book.BookTags"
                            MultiSelection="true" Label="Book Tags" AnchorOrigin="Origin.BottomCenter">
                         @foreach (var bookTag in bookTags)
                         {
                             <MudSelectItem Value="@bookTag" />
                         }
                     </MudSelect>
-                    <MudTextField @bind-Value="@Book.Price" InputType="InputType.Number" Variant="Variant.Text" Adornment="Adornment.Start"
-                              Label="Price" AdornmentIcon="@Icons.Material.Filled.AttachMoney" For="@(()=> Book!.Price)" />
-                    <MudTextField @bind-Value="@Book.Discount" InputType="InputType.Number" Variant="Variant.Text" Adornment="Adornment.Start"
-                              Label="Discount" AdornmentIcon="@Icons.Material.Filled.Discount" For="@(()=> Book!.Discount)" />
-                    <MudTextField T="DateTime?" @bind-Value="@Book.PublishedDate"
-                              Format="dd-MM-yyyy" Label="Published Date" InputType="InputType.Date" />
-                    <MudTextField @bind-Value="Book.Description" Label="Description" Variant="Variant.Text" Lines="5" For="@(()=> Book!.Description)" />
+                    @*Price*@
+                    <MudTextField @bind-Value="@Book.Price" For="@(()=> Book!.Price)" Label="Price" InputType="InputType.Number"
+                              Variant="Variant.Text" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.AttachMoney" />
+                    @*Discount*@
+                    <MudTextField @bind-Value="@Book.Discount" For="@(()=> Book!.Discount)" InputType="InputType.Number" Label="Discount (%)"
+                              Variant="Variant.Text" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Discount" />
+                    @*Published Date*@
+                    <MudTextField T="DateTime?" @bind-Value="@Book.PublishedDate" For="@(()=>Book.PublishedDate)"
+                              Format="yyyy-MM-dd" Label="Published Date" InputType="InputType.Date" />
+                    @*Description*@
+                    <MudTextField @bind-Value="Book.Description" For="@(()=> Book!.Description)" Label="Description"
+                              Variant="Variant.Text" Lines="5" />
+
+
+                    <div class="d-flex align-center justify-space-between pt-4">
+
+                        <MudButton Variant="Variant.Filled" ButtonType="ButtonType.Submit" Color="Color.Primary" Class="ml-auto">@Title</MudButton>
+                    </div>
                 </EditForm>
+
             </MudPaper>
         </MudItem>
 
         <MudItem xs="4">
-            <MudPaper Class="mud-width-full  py-2">
+            <MudPaper Class="mud-width-full">
                 <MudImage Src="@Book.Avatar" Class="mud-width-full" />
+                
             </MudPaper>
+            <div class="d-flex align-center justify-center py-2">
+                    <MudFileUpload T="IBrowserFile" OnFilesChanged="HandleImageUpload">
+                        <ButtonTemplate Context="file">
+                            <MudButton HtmlTag="label"
+                                   Variant="Variant.Filled"
+                                   Color="Color.Primary"
+                                   StartIcon="@Icons.Material.Filled.CloudUpload"
+                                   for="@file">
+                                Upload Files
+                            </MudButton>
+                        </ButtonTemplate>
+                    </MudFileUpload>
+                </div>
         </MudItem>
+
     }
 
 </MudGrid>

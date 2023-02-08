@@ -93,8 +93,8 @@ namespace BusinessManager.DataAccess.Migrations
                     b.Property<double>("Price")
                         .HasColumnType("float");
 
-                    b.Property<DateTimeOffset>("PublishedDate")
-                        .HasColumnType("datetimeoffset");
+                    b.Property<DateTime>("PublishedDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<int>("PublisherId")
                         .HasColumnType("int");
@@ -178,10 +178,7 @@ namespace BusinessManager.DataAccess.Migrations
             modelBuilder.Entity("BusinessManager.DataAccess.DAOs.BookTag", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<DateTimeOffset>("CreatedDate")
                         .HasColumnType("datetimeoffset");

@@ -34,7 +34,7 @@ namespace BusinessManagerWeb.Services
             var filePath = Path.Combine(folderDirectory, fileName);
 
             await using FileStream fs = new FileStream(filePath, FileMode.Create);
-            await file.OpenReadStream().CopyToAsync(fs);
+            await file.OpenReadStream(maxAllowedSize: 1024*1024*50).CopyToAsync(fs);
 
             var fullPath = $"/images/book/{fileName}";
             return fullPath;
