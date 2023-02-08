@@ -11,10 +11,10 @@ namespace BusinessManager.Business.Repositories.IRepositories
         Task<bool> DeleteAsync(T entity);
         Task<bool> DeleteRangeAsync(IEnumerable<T> entites);
         Task<IEnumerable<T>> GetAllAsync(Expression<Func<U, bool>>? filter = null,
-            Func<IQueryable<U>, IOrderedQueryable<U>>? orderby = null
-           );
-        Task<T> GetFirstOrDefaultAsync(Expression<Func<U, bool>>? filter = null);
-        Task<T> GetById(int id);
+            string? includeProperties = null);
+        Task<T> GetFirstOrDefaultAsync(Expression<Func<U, bool>>? filter = null,
+            string? includeProperties = null);
+        
 
     }
 }
