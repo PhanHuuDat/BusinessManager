@@ -5,6 +5,6 @@ namespace BusinessManager.Business.Repositories.IRepositories
 {
     public interface IPublisherRepository : IRepository<PublisherDTO,Publisher>
     {
-        Task<PublisherDTO?> UpdateAsync(PublisherDTO entity);
+        Task<bool> UpdateAsync(PublisherDTO entity);
     }
 }

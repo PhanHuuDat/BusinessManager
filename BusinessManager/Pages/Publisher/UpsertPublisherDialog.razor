@@ -46,10 +46,11 @@
     private async void OnValidSubmit(EditContext editContext)
     {
         isDisabled = true;
+        bool result;
         if (item!.Id == 0)
         {
-            item = await UnitOfWork.Publisher.CreateAsync(item);
-            if (item != null)
+            result = await UnitOfWork.Publisher.CreateAsync(item);
+            if (result)
             {
                 Snackbar.Add("Added Successfully", Severity.Success);
                 await UnitOfWork.SaveAsync();
@@ -61,11 +62,10 @@
         }
         else
         {
-            item = await UnitOfWork.Publisher.UpdateAsync(item);
-            if (item != null)
+            result = await UnitOfWork.Publisher.UpdateAsync(item);
+            if (result)
             {
                 Snackbar.Add("Updated Successfully", Severity.Success);
-                await UnitOfWork.SaveAsync();
             }
             else
             {

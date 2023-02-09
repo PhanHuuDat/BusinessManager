@@ -19,7 +19,7 @@ namespace BusinessManager.Business.Repositories.Implements
         {
 
         }
-        public async Task<BookSizeDTO?> UpdateAsync(BookSizeDTO entity)
+        public async Task<bool> UpdateAsync(BookSizeDTO entity)
         {
             var objFromDb = await _db.BookSize.FirstOrDefaultAsync(c => c.Id == entity.Id);
 
@@ -28,10 +28,10 @@ namespace BusinessManager.Business.Repositories.Implements
                 objFromDb.SizeValue = entity.SizeValue;
                 objFromDb.UpdatedDate = DateTimeOffset.UtcNow;
                 var result = await Task.Run(() => _db.Update(objFromDb));
-                return _mapper.Map<BookSizeDTO>(result.Entity);
+                return true;
             }
 
-            return null;
+            return false;
         }
     }
 }

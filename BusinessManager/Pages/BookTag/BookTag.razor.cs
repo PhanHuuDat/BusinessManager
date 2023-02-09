@@ -78,7 +78,7 @@ namespace BusinessManagerWeb.Pages.BookTag
                 { "ContentText", "Do you really want to delete this item? This process cannot be undone." },
                 { "ButtonText", "Delete" },
                 { "Color", Color.Error },
-                { "itemId", itemDTO.Id}
+                { "item", itemDTO}
             };
             var options = new DialogOptions() { CloseButton = true, MaxWidth = MaxWidth.ExtraSmall };
             var dialog = DialogService.Show<DeleteBookTagDialog>("Delete Item", parameters, options);

@@ -20,18 +20,17 @@
 
     [Parameter] public Color Color { get; set; }
 
-    [Parameter] public int itemId { get; set; }
+    [Parameter] public PublisherDTO item { get; set; }
 
     private bool isDisabled = false;
 
     private async void Submit()
     {
         isDisabled = true;
-        var deleteResult = await UnitOfWork.Publisher.DeleteAsync(itemId);
+        var deleteResult = await UnitOfWork.Publisher.DeleteAsync(item);
         if (deleteResult)
         {
             Snackbar.Add("Deleted Successfully", Severity.Success);
-            await UnitOfWork.SaveAsync();
         }
         else
         {

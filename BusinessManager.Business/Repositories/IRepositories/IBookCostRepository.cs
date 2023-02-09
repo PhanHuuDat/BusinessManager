@@ -5,6 +5,6 @@ namespace BusinessManager.Business.Repositories.IRepositories
 {
     public interface IBookCostRepository : IRepository<BookCostDTO,BookCost>
     {
-        Task<BookCostDTO?> UpdateAsync(BookCostDTO entity);
+        Task<bool> UpdateAsync(BookCostDTO entity);
     }
 }

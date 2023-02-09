@@ -96,7 +96,7 @@ namespace BusinessManager.Business.Repositories.Implements
             return _mapper.Map<IEnumerable<U>, IEnumerable<T>>(await query.ToListAsync());
         }
 
-        public async Task<T?> GetFirstOrDefaultAsync(Expression<Func<U, bool>>? filter = null, string? includeProperties = null)
+        public async Task<T> GetFirstOrDefaultAsync(Expression<Func<U, bool>>? filter = null, string? includeProperties = null)
         {
 
             IQueryable<U> query = dbSet;
@@ -114,8 +114,17 @@ namespace BusinessManager.Business.Repositories.Implements
                 }
             }
             var result = await query.FirstOrDefaultAsync();
-            return _mapper.Map<T?>(result);
+            return _mapper.Map<T>(result);
         }
 
+        public Task<bool> CreateRangeAsync(IEnumerable<T> entities)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<IEnumerable<T>> GetAllAsync(Expression<Func<U, bool>>? filter = null, string? includeProperties = null)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

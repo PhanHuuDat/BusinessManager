@@ -79,7 +79,7 @@ namespace BusinessManagerWeb.Pages.Author
                 { "ContentText", "Do you really want to delete this item? This process cannot be undone." },
                 { "ButtonText", "Delete" },
                 { "Color", Color.Error },
-                { "itemId", itemDTO.Id}
+                { "item" , itemDTO}
             };
             var options = new DialogOptions() { CloseButton = true, MaxWidth = MaxWidth.ExtraSmall };
             var dialog = DialogService.Show<DeleteAuthorDialog>("Delete Item", parameters, options);

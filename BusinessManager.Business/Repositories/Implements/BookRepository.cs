@@ -18,7 +18,7 @@ namespace BusinessManager.Business.Repositories.Implements
         {
 
         }
-        public async Task<BookDTO?> UpdateAsync(BookDTO entity)
+        public async Task<bool> UpdateAsync(BookDTO entity)
         {
             var obj = await _db.Book.FirstOrDefaultAsync(book => book.Id == entity.Id);
             if (obj != null)
@@ -33,10 +33,11 @@ namespace BusinessManager.Business.Repositories.Implements
                 obj.Discount = entity.Discount;
                 obj.PublishedDate = entity.PublishedDate??DateTime.Now;
                 obj.UpdatedDate = DateTimeOffset.UtcNow;
-                return _mapper.Map<BookDTO>(obj);
+                
+                return true;
             }
 
-            return null;
+            return false;
         }
     }
 }

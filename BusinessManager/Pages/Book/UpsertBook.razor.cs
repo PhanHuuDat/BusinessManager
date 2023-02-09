@@ -48,7 +48,7 @@ namespace BusinessManagerWeb.Pages.Book
 
         public async Task OnValidSubmit()
         {
-            BookDTO? result;
+            bool result;
             if (Book.Id == 0)
             {
                 result = await UnitOfWork.Book.CreateAsync(Book);
@@ -64,13 +64,12 @@ namespace BusinessManagerWeb.Pages.Book
                 result = await UnitOfWork.Book.UpdateAsync(Book);
             }
 
-            if (result == null)
+            if (!result)
             {
                 Snackbar.Add("Upsert book failed", Severity.Error);
             }
             else
             {
-                await UnitOfWork.SaveAsync();
                 Snackbar.Add("Upsert book successfully", Severity.Success);
             }
 
