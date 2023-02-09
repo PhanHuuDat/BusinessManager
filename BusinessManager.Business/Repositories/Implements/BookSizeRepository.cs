@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace BusinessManager.Business.Repositories.Implements
 {
-    public class BookSizeRepository : Repository<BookSizeDTO, BookSize>, IBookSizeRepository
+    public class BookSizeRepository : Repository<BookSizeDTO, Size>, IBookSizeRepository
     {
 
         public BookSizeRepository(ApplicationDbContext db, IMapper mapper) : base(db, mapper)
@@ -21,7 +21,7 @@ namespace BusinessManager.Business.Repositories.Implements
         }
         public async Task<bool> UpdateAsync(BookSizeDTO entity)
         {
-            var objFromDb = await _db.BookSize.FirstOrDefaultAsync(c => c.Id == entity.Id);
+            var objFromDb = await _db.Size.FirstOrDefaultAsync(c => c.Id == entity.Id);
 
             if (objFromDb != null)
             {

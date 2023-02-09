@@ -29,7 +29,7 @@ namespace BusinessManager.Models.DTOs
 
         [Range(1, int.MaxValue, ErrorMessage = "Please select a book size")]
         public int? BookSizeId { get; set; }
-        public BookSize? BookSize { get; set; }
+        public Size? BookSize { get; set; }
         [Required]
         public double Price { get; set; }
         [Required]
@@ -39,6 +39,6 @@ namespace BusinessManager.Models.DTOs
         public DateTime? PublishedDate { get; set; }
         public IEnumerable<BookCostDTO>? BookCosts { get; set; }
         [Required, MinLength(1)]
-        public IEnumerable<BookBookTagDTO>? BookBookTags { get; set; }
+        public IEnumerable<TagDTO>? BookTags { get; set; }
     }
 }

@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BusinessManager.Business.Repositories.Implements
 {
-    public class BookTagRepository : Repository<BookTagDTO, BookTag>, IBookTagRepository
+    public class BookTagRepository : Repository<TagDTO, Tag>, IBookTagRepository
     {
 
         public BookTagRepository(ApplicationDbContext db, IMapper mapper) : base(db, mapper)
@@ -15,9 +15,9 @@ namespace BusinessManager.Business.Repositories.Implements
 
         }
 
-        public async Task<bool> UpdateAsync(BookTagDTO entity)
+        public async Task<bool> UpdateAsync(TagDTO entity)
         {
-            var objFromDb = await _db.BookTag.FirstOrDefaultAsync(c => c.Id == entity.Id);
+            var objFromDb = await _db.Tag.FirstOrDefaultAsync(c => c.Id == entity.Id);
 
             if (objFromDb != null)
             {

@@ -4,6 +4,7 @@ using BusinessManager.DataAccess.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BusinessManager.DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230209154719_init")]
+    partial class init
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -24,15 +26,15 @@ namespace BusinessManager.DataAccess.Migrations
 
             modelBuilder.Entity("BookTag", b =>
                 {
-                    b.Property<int>("BooksId")
+                    b.Property<int>("BookTagsId")
                         .HasColumnType("int");
 
-                    b.Property<int>("TagsId")
+                    b.Property<int>("BookTagsId1")
                         .HasColumnType("int");
 
-                    b.HasKey("BooksId", "TagsId");
+                    b.HasKey("BookTagsId", "BookTagsId1");
 
-                    b.HasIndex("TagsId");
+                    b.HasIndex("BookTagsId1");
 
                     b.ToTable("BookTag");
                 });
@@ -236,13 +238,13 @@ namespace BusinessManager.DataAccess.Migrations
                 {
                     b.HasOne("BusinessManager.DataAccess.DAOs.Book", null)
                         .WithMany()
-                        .HasForeignKey("BooksId")
+                        .HasForeignKey("BookTagsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("BusinessManager.DataAccess.DAOs.Tag", null)
                         .WithMany()
-                        .HasForeignKey("TagsId")
+                        .HasForeignKey("BookTagsId1")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -277,7 +279,7 @@ namespace BusinessManager.DataAccess.Migrations
             modelBuilder.Entity("BusinessManager.DataAccess.DAOs.Cost", b =>
                 {
                     b.HasOne("BusinessManager.DataAccess.DAOs.Book", "Book")
-                        .WithMany("Costs")
+                        .WithMany("BookCosts")
                         .HasForeignKey("BookId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -292,7 +294,7 @@ namespace BusinessManager.DataAccess.Migrations
 
             modelBuilder.Entity("BusinessManager.DataAccess.DAOs.Book", b =>
                 {
-                    b.Navigation("Costs");
+                    b.Navigation("BookCosts");
                 });
 
             modelBuilder.Entity("BusinessManager.DataAccess.DAOs.Publisher", b =>

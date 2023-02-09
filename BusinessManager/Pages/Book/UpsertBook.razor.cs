@@ -22,7 +22,7 @@ namespace BusinessManagerWeb.Pages.Book
 
         private IEnumerable<AuthorDTO> authors = Enumerable.Empty<AuthorDTO>();
         private IEnumerable<BookSizeDTO> bookSizes = Enumerable.Empty<BookSizeDTO>();
-        private IEnumerable<BookTagDTO> bookTags = Enumerable.Empty<BookTagDTO>();
+        private IEnumerable<TagDTO> bookTags = Enumerable.Empty<TagDTO>();
         private IEnumerable<PublisherDTO> publishers = Enumerable.Empty<PublisherDTO>();
         protected override async Task OnAfterRenderAsync(bool firstRender)
         {

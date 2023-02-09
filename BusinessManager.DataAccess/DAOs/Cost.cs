@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BusinessManager.DataAccess.DAOs
 {
-    public class BookCost : BaseDAO
+    public class Cost : BaseDAO
     {
         [Key]
         public int Id { get; set; }
@@ -12,7 +12,7 @@ namespace BusinessManager.DataAccess.DAOs
         public int BookId { get; set; }
         public Book? Book { get; set; }
         [Required]
-        public double Cost { get; set; }
+        public double Price { get; set; }
         [Required]
         public int Quantity { get; set; }
         [Required]

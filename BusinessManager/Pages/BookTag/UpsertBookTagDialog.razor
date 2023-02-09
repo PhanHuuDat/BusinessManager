@@ -39,7 +39,7 @@
     [CascadingParameter] MudDialogInstance MudDialog { get; set; }
     private bool isDisabled = false;
 
-    [Parameter] public BookTagDTO? item { get; set; } = new();
+    [Parameter] public TagDTO? item { get; set; } = new();
 
     private async void OnValidSubmit(EditContext editContext)
     {

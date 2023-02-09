@@ -2,7 +2,7 @@
 
 namespace BusinessManager.Models.DTOs
 {
-    public class BookTagDTO : BaseDTO
+    public class TagDTO : BaseDTO
     {
         public int? Id { get; set; } = 0;
 
@@ -11,7 +11,7 @@ namespace BusinessManager.Models.DTOs
 
         public override bool Equals(object o)
         {
-            var other = o as BookTagDTO;
+            var other = o as TagDTO;
             return other?.Name == Name;
         }
 
