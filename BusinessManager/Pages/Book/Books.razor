@@ -26,7 +26,6 @@
         <col />
         <col />
         <col />
-        <col />
         <col style="width:80px;" />
     </ColGroup>
     <HeaderContent>
@@ -41,7 +40,7 @@
         <MudTd DataLabel="Title">@context.Title</MudTd>
         <MudTd DataLabel="Publisher">@context.Publisher!.Name</MudTd>
         <MudTd DataLabel="Price">@context.Price</MudTd>
-        <MudTd DataLabel="Discount">@(context.Discount*100)%</MudTd>
+        <MudTd DataLabel="Discount">@(context.Discount)%</MudTd>
         <MudTd DataLabel="Published Date">@context.PublishedDate</MudTd>
         <MudTd>
             <div class="d-flex">

@@ -16,7 +16,7 @@ namespace BusinessManager.Business.Repositories.Implements
     {
         public BookRepository(ApplicationDbContext db, IMapper mapper) : base(db, mapper)
         {
-
+            obj = new();
         }
         public async Task<bool> UpdateAsync(BookDTO entity)
         {

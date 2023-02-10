@@ -18,7 +18,7 @@ namespace BusinessManager.Models.DTOs
         // Note: this is important too!
         public override int GetHashCode() => Name?.GetHashCode() ?? 0;
 
-        // Implement this for the Pizza to display correctly in MudSelect
+        // Implement this for the Tag to display correctly in MudSelect
         public override string ToString() => Name;
 
     }

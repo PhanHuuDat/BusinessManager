@@ -13,6 +13,8 @@ namespace BusinessManager.Business.Repositories.Implements
         protected readonly ApplicationDbContext _db;
         private readonly DbSet<U> dbSet;
         protected readonly IMapper _mapper;
+        protected U obj { get; set; }
+
         public Repository(ApplicationDbContext db, IMapper mapper)
         {
             _db = db;
@@ -21,10 +23,11 @@ namespace BusinessManager.Business.Repositories.Implements
         }
         public async Task<bool> CreateAsync(T entity)
         {
-            U obj = _mapper.Map<U>(entity);
+            _mapper.Map(entity, obj);
+
             try
             {
-                var result = await dbSet.AddAsync(obj);
+                dbSet.Attach(obj);
                 await _db.SaveChangesAsync();
                 return true;
             }
@@ -38,7 +41,7 @@ namespace BusinessManager.Business.Repositories.Implements
 
         public async Task<bool> DeleteAsync(T entity)
         {
-            U obj = _mapper.Map<U>(entity);
+           _mapper.Map(entity, obj);
 
             try
             {
@@ -70,7 +73,6 @@ namespace BusinessManager.Business.Repositories.Implements
         }
 
         public async Task<IEnumerable<T>> GetAllAsync(Expression<Func<U, bool>>? filter = null,
-            Func<IQueryable<U>, IOrderedQueryable<U>>? orderby = null,
             string? includeProperties = null)
         {
             IQueryable<U> query = dbSet.AsNoTracking();
@@ -86,11 +88,6 @@ namespace BusinessManager.Business.Repositories.Implements
                 {
                     query = query.Include(includeProperty);
                 }
-            }
-            if (orderby != null)
-            {
-                List<U> source = await orderby(query).ToListAsync();
-                return await Task.Run(() => _mapper.Map<IEnumerable<U>, IEnumerable<T>>(source));
             }
 
             return _mapper.Map<IEnumerable<U>, IEnumerable<T>>(await query.ToListAsync());
@@ -122,9 +119,6 @@ namespace BusinessManager.Business.Repositories.Implements
             throw new NotImplementedException();
         }
 
-        public Task<IEnumerable<T>> GetAllAsync(Expression<Func<U, bool>>? filter = null, string? includeProperties = null)
-        {
-            throw new NotImplementedException();
-        }
+        
     }
 }
