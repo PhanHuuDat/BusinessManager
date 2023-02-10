@@ -16,8 +16,27 @@ namespace BusinessManager.Business.Repositories.Implements
     {
         public BookRepository(ApplicationDbContext db, IMapper mapper) : base(db, mapper)
         {
-            obj = new();
+            
         }
+
+        public new async Task<bool> CreateAsync(BookDTO entity)
+        {
+            Book obj = _mapper.Map<Book>(entity);
+
+            try
+            {
+                _db.Entry(obj.Tags).State = EntityState.Unchanged;
+                await dbSet.AddAsync(obj);
+                await _db.SaveChangesAsync();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+                return false;
+            }
+        }
+
         public async Task<bool> UpdateAsync(BookDTO entity)
         {
             var obj = await _db.Book.FirstOrDefaultAsync(book => book.Id == entity.Id);

@@ -7,7 +7,7 @@ namespace BusinessManager.DataAccess.DAOs
     {
         [Key]
         public int Id { get; set; }
-
+       
         [Required]
         [StringLength(100)]
         public string Title { get; set; } = string.Empty;
@@ -33,6 +33,7 @@ namespace BusinessManager.DataAccess.DAOs
         public double Discount { get; set; }
         public DateTime PublishedDate { get; set; }
         public ICollection<Cost>? Costs { get; set; }
-        public ICollection<Tag>? Tags { get; set; }
+       
+        public ICollection<Tag> Tags { get; set; } = new List<Tag>();
     }
 }

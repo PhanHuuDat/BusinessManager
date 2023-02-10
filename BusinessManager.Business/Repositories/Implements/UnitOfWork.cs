@@ -6,10 +6,8 @@ namespace BusinessManager.Business.Repositories.Implements
 {
     public class UnitOfWork : IUnitOfWork
     {
-        private readonly ApplicationDbContext _db;
         public UnitOfWork(ApplicationDbContext db, IMapper mapper)
         {
-            _db = db;
             Author = new AuthorRepository(db, mapper);
             BookCost= new BookCostRepository(db, mapper);
             Book = new BookRepository(db, mapper);

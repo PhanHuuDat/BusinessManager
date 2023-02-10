@@ -11,19 +11,18 @@ namespace BusinessManager.Business.Repositories.Implements
     public class Repository<T, U> : IRepository<T, U> where T : BaseDTO where U : BaseDAO
     {
         protected readonly ApplicationDbContext _db;
-        private readonly DbSet<U> dbSet;
+        protected readonly DbSet<U> dbSet;
         protected readonly IMapper _mapper;
-        protected U obj { get; set; }
-
+        
         public Repository(ApplicationDbContext db, IMapper mapper)
         {
             _db = db;
             _mapper = mapper;
             dbSet = db.Set<U>();
         }
-        public async Task<bool> CreateAsync(T entity)
+        public virtual async Task<bool> CreateAsync(T entity)
         {
-            _mapper.Map(entity, obj);
+            U obj = _mapper.Map<U>(entity);
 
             try
             {
@@ -39,9 +38,9 @@ namespace BusinessManager.Business.Repositories.Implements
 
         }
 
-        public async Task<bool> DeleteAsync(T entity)
+        public virtual async Task<bool> DeleteAsync(T entity)
         {
-           _mapper.Map(entity, obj);
+           U obj = _mapper.Map<U>(entity);
 
             try
             {
@@ -56,7 +55,7 @@ namespace BusinessManager.Business.Repositories.Implements
             }
         }
 
-        public async Task<bool> DeleteRangeAsync(IEnumerable<T> entities)
+        public virtual async Task<bool> DeleteRangeAsync(IEnumerable<T> entities)
         {
             IEnumerable<U> objects = _mapper.Map<IEnumerable<U>>(entities);
             try
@@ -72,7 +71,7 @@ namespace BusinessManager.Business.Repositories.Implements
             }
         }
 
-        public async Task<IEnumerable<T>> GetAllAsync(Expression<Func<U, bool>>? filter = null,
+        public virtual async Task<IEnumerable<T>> GetAllAsync(Expression<Func<U, bool>>? filter = null,
             string? includeProperties = null)
         {
             IQueryable<U> query = dbSet.AsNoTracking();
@@ -93,7 +92,7 @@ namespace BusinessManager.Business.Repositories.Implements
             return _mapper.Map<IEnumerable<U>, IEnumerable<T>>(await query.ToListAsync());
         }
 
-        public async Task<T> GetFirstOrDefaultAsync(Expression<Func<U, bool>>? filter = null, string? includeProperties = null)
+        public virtual async Task<T> GetFirstOrDefaultAsync(Expression<Func<U, bool>>? filter = null, string? includeProperties = null)
         {
 
             IQueryable<U> query = dbSet;
@@ -114,7 +113,7 @@ namespace BusinessManager.Business.Repositories.Implements
             return _mapper.Map<T>(result);
         }
 
-        public Task<bool> CreateRangeAsync(IEnumerable<T> entities)
+        public virtual Task<bool> CreateRangeAsync(IEnumerable<T> entities)
         {
             throw new NotImplementedException();
         }
