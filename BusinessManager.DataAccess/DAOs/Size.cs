@@ -2,7 +2,7 @@
 
 namespace BusinessManager.DataAccess.DAOs
 {
-    public class BookSize : BaseDAO
+    public class Size : BaseDAO
     {
         [Key]
         public int Id { get; set; }

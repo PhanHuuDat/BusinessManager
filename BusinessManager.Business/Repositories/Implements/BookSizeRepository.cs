@@ -12,26 +12,26 @@ using System.Threading.Tasks;
 
 namespace BusinessManager.Business.Repositories.Implements
 {
-    public class BookSizeRepository : Repository<BookSizeDTO, BookSize>, IBookSizeRepository
+    public class BookSizeRepository : Repository<BookSizeDTO, Size>, IBookSizeRepository
     {
 
         public BookSizeRepository(ApplicationDbContext db, IMapper mapper) : base(db, mapper)
         {
 
         }
-        public async Task<BookSizeDTO?> UpdateAsync(BookSizeDTO entity)
+        public async Task<bool> UpdateAsync(BookSizeDTO entity)
         {
-            var objFromDb = await _db.BookSize.FirstOrDefaultAsync(c => c.Id == entity.Id);
+            var objFromDb = await _db.Size.FirstOrDefaultAsync(c => c.Id == entity.Id);
 
             if (objFromDb != null)
             {
                 objFromDb.SizeValue = entity.SizeValue;
                 objFromDb.UpdatedDate = DateTimeOffset.UtcNow;
                 var result = await Task.Run(() => _db.Update(objFromDb));
-                return _mapper.Map<BookSizeDTO>(result.Entity);
+                return true;
             }
 
-            return null;
+            return false;
         }
     }
 }

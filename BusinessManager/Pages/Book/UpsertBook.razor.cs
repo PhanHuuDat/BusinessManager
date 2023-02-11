@@ -22,7 +22,7 @@ namespace BusinessManagerWeb.Pages.Book
 
         private IEnumerable<AuthorDTO> authors = Enumerable.Empty<AuthorDTO>();
         private IEnumerable<BookSizeDTO> bookSizes = Enumerable.Empty<BookSizeDTO>();
-        private IEnumerable<BookTagDTO> bookTags = Enumerable.Empty<BookTagDTO>();
+        private IEnumerable<TagDTO> bookTags = Enumerable.Empty<TagDTO>();
         private IEnumerable<PublisherDTO> publishers = Enumerable.Empty<PublisherDTO>();
         protected override async Task OnAfterRenderAsync(bool firstRender)
         {
@@ -37,7 +37,7 @@ namespace BusinessManagerWeb.Pages.Book
                 publishers = await UnitOfWork.Publisher.GetAllAsync();
                 if (Id != 0)
                 {
-                    Book = await UnitOfWork.Book.GetFirstOrDefaultAsync(book => book.ID == Id) ?? new();
+                    Book = await UnitOfWork.Book.GetFirstOrDefaultAsync(book => book.Id == Id) ?? new();
                     Title = "Update";
                     OldImageUrl = Book.Avatar;
                 }
@@ -48,7 +48,7 @@ namespace BusinessManagerWeb.Pages.Book
 
         public async Task OnValidSubmit()
         {
-            BookDTO? result;
+            bool result;
             if (Book.Id == 0)
             {
                 result = await UnitOfWork.Book.CreateAsync(Book);
@@ -64,13 +64,12 @@ namespace BusinessManagerWeb.Pages.Book
                 result = await UnitOfWork.Book.UpdateAsync(Book);
             }
 
-            if (result == null)
+            if (!result)
             {
                 Snackbar.Add("Upsert book failed", Severity.Error);
             }
             else
             {
-                await UnitOfWork.SaveAsync();
                 Snackbar.Add("Upsert book successfully", Severity.Success);
             }
 

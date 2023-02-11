@@ -3,10 +3,9 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BusinessManager.DataAccess.DAOs
 {
-    public class BookTag : BaseDAO
+    public class Tag : BaseDAO
     {
         [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int Id { get; set; }
 
         [Required]

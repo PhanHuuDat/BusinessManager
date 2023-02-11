@@ -18,26 +18,46 @@ namespace BusinessManager.Business.Repositories.Implements
         {
 
         }
-        public async Task<BookDTO?> UpdateAsync(BookDTO entity)
+
+        public new async Task<bool> CreateAsync(BookDTO entity)
         {
-            var obj = await _db.Book.FirstOrDefaultAsync(book => book.ID == entity.Id);
+            Book obj = _mapper.Map<Book>(entity);
+
+            try
+            {
+                //_db.Entry(obj.Tags).State = EntityState.Unchanged;
+
+                dbSet.Attach(obj);
+                await _db.SaveChangesAsync();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+                return false;
+            }
+        }
+
+        public async Task<bool> UpdateAsync(BookDTO entity)
+        {
+            var obj = await _db.Book.FirstOrDefaultAsync(book => book.Id == entity.Id);
             if (obj != null)
             {
                 obj.Title = entity.Title;
                 obj.Description = entity.Description;
                 obj.Avatar = entity.Avatar;
-                obj.AuthorId = entity.AuthorId??0;
-                obj.PublisherId = entity.PublisherId??0;
-                obj.BookSizeId = entity.BookSizeId??0;
+                obj.AuthorId = entity.AuthorId ?? 0;
+                obj.PublisherId = entity.PublisherId ?? 0;
+                obj.BookSizeId = entity.BookSizeId ?? 0;
                 obj.Price = entity.Price;
                 obj.Discount = entity.Discount;
-                obj.PublishedDate = entity.PublishedDate??DateTime.Now;
-                obj.BookTags = (ICollection<BookTag>?)entity.BookTags;
+                obj.PublishedDate = entity.PublishedDate ?? DateTime.Now;
                 obj.UpdatedDate = DateTimeOffset.UtcNow;
-                return _mapper.Map<BookDTO>(obj);
+
+                return true;
             }
 
-            return null;
+            return false;
         }
     }
 }

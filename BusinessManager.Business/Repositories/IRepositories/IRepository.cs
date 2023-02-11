@@ -6,13 +6,15 @@ namespace BusinessManager.Business.Repositories.IRepositories
 {
     public interface IRepository<T, U> where T : BaseDTO where U : BaseDAO
     {
-        Task<T?> CreateAsync(T entity);
-        Task<bool> DeleteAsync(int entityId);
-        Task<bool> DeleteRangeAsync(IEnumerable<int> entites);
+        Task<bool> CreateAsync(T entity);
+        Task<bool> CreateRangeAsync(IEnumerable<T> entities);
+        Task<bool> DeleteAsync(T entity);
+        Task<bool> DeleteRangeAsync(IEnumerable<T> entites);
         Task<IEnumerable<T>> GetAllAsync(Expression<Func<U, bool>>? filter = null,
-            Func<IQueryable<U>, IOrderedQueryable<U>>? orderby = null,
             string? includeProperties = null);
-        Task<T?> GetFirstOrDefaultAsync(Expression<Func<U, bool>>? filter = null, string? includeProperties = null);
+        Task<T> GetFirstOrDefaultAsync(Expression<Func<U, bool>>? filter = null,
+            string? includeProperties = null);
+        
 
     }
 }

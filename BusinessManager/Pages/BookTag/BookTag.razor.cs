@@ -14,8 +14,8 @@ namespace BusinessManagerWeb.Pages.BookTag
 #pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
 
         private string searchString = "";
-        private BookTagDTO selectedItem = new();
-        private List<BookTagDTO> elements = new();
+        private TagDTO selectedItem = new();
+        private List<TagDTO> elements = new();
         private bool isLoading = false;
 
         protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -37,7 +37,7 @@ namespace BusinessManagerWeb.Pages.BookTag
             elements = enumerable.ToList();
         }
 
-        private async Task OpenUpsertDialog(BookTagDTO? itemDTO)
+        private async Task OpenUpsertDialog(TagDTO? itemDTO)
         {
             //Setting Dialog
             var parameter = new DialogParameters { ["item"] = itemDTO };
@@ -50,7 +50,7 @@ namespace BusinessManagerWeb.Pages.BookTag
             if (!resultFromDialog.Canceled)
             {
                 //Get result when Dialog return ok
-                var result = (BookTagDTO?)resultFromDialog.Data;
+                var result = (TagDTO?)resultFromDialog.Data;
                 //Handle when return value have Id != 0 => valid data
                 if (result != null)
                 {
@@ -70,7 +70,7 @@ namespace BusinessManagerWeb.Pages.BookTag
             }
         }
 
-        private async Task DeleteItemAsync(BookTagDTO itemDTO)
+        private async Task DeleteItemAsync(TagDTO itemDTO)
         {
             //Setting Dialog
             var parameters = new DialogParameters
@@ -78,7 +78,7 @@ namespace BusinessManagerWeb.Pages.BookTag
                 { "ContentText", "Do you really want to delete this item? This process cannot be undone." },
                 { "ButtonText", "Delete" },
                 { "Color", Color.Error },
-                { "itemId", itemDTO.Id}
+                { "item", itemDTO}
             };
             var options = new DialogOptions() { CloseButton = true, MaxWidth = MaxWidth.ExtraSmall };
             var dialog = DialogService.Show<DeleteBookTagDialog>("Delete Item", parameters, options);
@@ -97,7 +97,7 @@ namespace BusinessManagerWeb.Pages.BookTag
             }
         }
 
-        private bool FilterFunc(BookTagDTO item)
+        private bool FilterFunc(TagDTO item)
         {
             if (string.IsNullOrWhiteSpace(searchString))
                 return true;
@@ -106,7 +106,7 @@ namespace BusinessManagerWeb.Pages.BookTag
             return false;
         }
 
-        private async Task GetEntity(BookTagDTO itemDTO)
+        private async Task GetEntity(TagDTO itemDTO)
         {
             var data = await unitOfWork.BookTag.GetFirstOrDefaultAsync(tag => tag.Name == itemDTO.Name);
             if (data != null)

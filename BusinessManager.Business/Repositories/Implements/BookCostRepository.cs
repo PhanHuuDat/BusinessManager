@@ -11,13 +11,13 @@ using System.Threading.Tasks;
 
 namespace BusinessManager.Business.Repositories.Implements
 {
-    public class BookCostRepository : Repository<BookCostDTO, BookCost>, IBookCostRepository
+    public class BookCostRepository : Repository<BookCostDTO, Cost>, IBookCostRepository
     {
         public BookCostRepository(ApplicationDbContext db, IMapper mapper) : base(db, mapper)
         {
 
         }
-        public Task<BookCostDTO?> UpdateAsync(BookCostDTO entity)
+        public Task<bool> UpdateAsync(BookCostDTO entity)
         {
             throw new NotImplementedException();
         }

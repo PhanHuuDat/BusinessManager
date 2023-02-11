@@ -39,15 +39,16 @@
     [CascadingParameter] MudDialogInstance MudDialog { get; set; }
     private bool isDisabled = false;
 
-    [Parameter] public BookTagDTO? item { get; set; } = new();
+    [Parameter] public TagDTO? item { get; set; } = new();
 
     private async void OnValidSubmit(EditContext editContext)
     {
         isDisabled = true;
+        bool result;
         if (item!.Id == 0)
         {
-            item = await UnitOfWork.BookTag.CreateAsync(item);
-            if(item != null)
+            result = await UnitOfWork.BookTag.CreateAsync(item);
+            if (result)
             {
                 Snackbar.Add("Added Successfully", Severity.Success);
                 await UnitOfWork.SaveAsync();
@@ -59,8 +60,8 @@
         }
         else
         {
-            item = await UnitOfWork.BookTag.UpdateAsync(item);
-            if(item != null)
+            result = await UnitOfWork.BookTag.UpdateAsync(item);
+            if (result)
             {
                 Snackbar.Add("Updated Successfully", Severity.Success);
                 await UnitOfWork.SaveAsync();

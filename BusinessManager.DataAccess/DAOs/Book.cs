@@ -6,8 +6,8 @@ namespace BusinessManager.DataAccess.DAOs
     public class Book : BaseDAO
     {
         [Key]
-        public int ID { get; set; }
-
+        public int Id { get; set; }
+       
         [Required]
         [StringLength(100)]
         public string Title { get; set; } = string.Empty;
@@ -28,12 +28,12 @@ namespace BusinessManager.DataAccess.DAOs
 
         [ForeignKey("BookSize")]
         public int BookSizeId { get; set; }
-        public BookSize? BookSize { get; set; }
+        public Size? BookSize { get; set; }
         public double Price { get; set; }
         public double Discount { get; set; }
         public DateTime PublishedDate { get; set; }
-        public ICollection<BookCost>? BookCosts { get; set; }
-        public ICollection<BookTag>? BookTags { get; set; }
-
+        public ICollection<Cost>? Costs { get; set; }
+       
+        public ICollection<Tag> Tags { get; set; } = new List<Tag>();
     }
 }
