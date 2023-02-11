@@ -16,7 +16,7 @@ namespace BusinessManager.Business.Repositories.Implements
     {
         public BookRepository(ApplicationDbContext db, IMapper mapper) : base(db, mapper)
         {
-            
+
         }
 
         public new async Task<bool> CreateAsync(BookDTO entity)
@@ -25,8 +25,9 @@ namespace BusinessManager.Business.Repositories.Implements
 
             try
             {
-                _db.Entry(obj.Tags).State = EntityState.Unchanged;
-                await dbSet.AddAsync(obj);
+                //_db.Entry(obj.Tags).State = EntityState.Unchanged;
+
+                dbSet.Attach(obj);
                 await _db.SaveChangesAsync();
                 return true;
             }
@@ -45,14 +46,14 @@ namespace BusinessManager.Business.Repositories.Implements
                 obj.Title = entity.Title;
                 obj.Description = entity.Description;
                 obj.Avatar = entity.Avatar;
-                obj.AuthorId = entity.AuthorId??0;
-                obj.PublisherId = entity.PublisherId??0;
-                obj.BookSizeId = entity.BookSizeId??0;
+                obj.AuthorId = entity.AuthorId ?? 0;
+                obj.PublisherId = entity.PublisherId ?? 0;
+                obj.BookSizeId = entity.BookSizeId ?? 0;
                 obj.Price = entity.Price;
                 obj.Discount = entity.Discount;
-                obj.PublishedDate = entity.PublishedDate??DateTime.Now;
+                obj.PublishedDate = entity.PublishedDate ?? DateTime.Now;
                 obj.UpdatedDate = DateTimeOffset.UtcNow;
-                
+
                 return true;
             }
 
