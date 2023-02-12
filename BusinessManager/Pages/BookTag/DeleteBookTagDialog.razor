@@ -31,7 +31,6 @@
         if (deleteResult)
         {
             Snackbar.Add("Deleted Successfully", Severity.Success);
-            await UnitOfWork.SaveAsync();
         }
         else
         {

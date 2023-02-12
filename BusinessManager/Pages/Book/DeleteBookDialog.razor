@@ -1,3 +1,44 @@
-﻿<h3>DeleteBookDialog</h3>
+﻿@using BusinessManager.Common.Statuses;
+@inject IUnitOfWork UnitOfWork
+@inject ISnackbar Snackbar
 
+<MudDialog>
+    <DialogContent>
+        <MudText>@ContentText</MudText>
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="Cancel">Cancel</MudButton>
+        <MudButton Color="@Color" Variant="Variant.Filled" Disabled="isDisabled" OnClick="Submit">@ButtonText</MudButton>
+    </DialogActions>
+</MudDialog>
+@code {
+    [CascadingParameter] MudDialogInstance MudDialog { get; set; }
 
+    [Parameter] public string? ContentText { get; set; }
+
+    [Parameter] public string? ButtonText { get; set; }
+
+    [Parameter] public Color Color { get; set; }
+
+    [Parameter] public BookDTO item { get; set; }
+
+    private bool isDisabled = false;
+
+    private async void Submit()
+    {
+        isDisabled = true;
+        var deleteResult = await UnitOfWork.Book.DeleteAsync(item);
+        if (deleteResult)
+        {
+            Snackbar.Add("Deleted Successfully", Severity.Success);
+        }
+        else
+        {
+            Snackbar.Add("Deleted Failed", Severity.Error);
+        }
+        isDisabled = false;
+        MudDialog.Close(DialogResult.Ok(true));
+    }
+
+    private void Cancel() => MudDialog.Cancel();
+}
