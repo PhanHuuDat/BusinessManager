@@ -25,8 +25,6 @@ namespace BusinessManager.Business.Repositories.Implements
 
             try
             {
-                //_db.Entry(obj.Tags).State = EntityState.Unchanged;
-
                 dbSet.Attach(obj);
                 await _db.SaveChangesAsync();
                 return true;
@@ -53,7 +51,8 @@ namespace BusinessManager.Business.Repositories.Implements
                 obj.Discount = entity.Discount;
                 obj.PublishedDate = entity.PublishedDate ?? DateTime.Now;
                 obj.UpdatedDate = DateTimeOffset.UtcNow;
-
+                var result = await Task.Run(() => _db.Update(obj));
+                await _db.SaveChangesAsync();
                 return true;
             }
 
