@@ -32,8 +32,8 @@ namespace BusinessManagerWeb.Pages.Book
                 isLoading = true;
                 StateHasChanged();
                 authors = await UnitOfWork.Author.GetAllAsync();
-                bookSizes = await UnitOfWork.BookSize.GetAllAsync();
-                bookTags = await UnitOfWork.BookTag.GetAllAsync();
+                bookSizes = await UnitOfWork.Size.GetAllAsync();
+                bookTags = await UnitOfWork.Tag.GetAllAsync();
                 publishers = await UnitOfWork.Publisher.GetAllAsync();
                 if (Id != 0)
                 {

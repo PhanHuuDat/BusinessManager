@@ -23,7 +23,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Pages\BookCost\" />
+    <Folder Include="Pages\Book\Import\" />
     <Folder Include="wwwroot\images\book\" />
   </ItemGroup>
 

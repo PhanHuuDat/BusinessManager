@@ -3,10 +3,10 @@
     public interface IUnitOfWork : IDisposable
     {
         IAuthorRepository Author { get; }
-        IBookCostRepository BookCost { get; }
+        IBookCostRepository Import { get; }
         IBookRepository Book { get; }
-        IBookSizeRepository BookSize { get; }
-        IBookTagRepository BookTag { get; }
+        IBookSizeRepository Size { get; }
+        IBookTagRepository Tag { get; }
         IPublisherRepository Publisher { get; }
 
         Task SaveAsync();
