@@ -33,7 +33,7 @@ namespace BusinessManagerWeb.Pages.Book
 
         private async Task GetItemListAsync()
         {
-            var enumerable = await UnitOfWork.Book.GetAllAsync(includeProperties: "Author,BookSize,Tags,Publisher");
+            var enumerable = await UnitOfWork.Book.GetAllAsync(includeProperties: "Author,Size,Tags,Publisher");
             elements = enumerable.ToList();
         }
 

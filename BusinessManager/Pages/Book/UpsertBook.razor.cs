@@ -37,7 +37,7 @@ namespace BusinessManagerWeb.Pages.Book
                 publishers = await UnitOfWork.Publisher.GetAllAsync();
                 if (Id != 0)
                 {
-                    Book = await UnitOfWork.Book.GetFirstOrDefaultAsync(book => book.Id == Id) ?? new();
+                    Book = await UnitOfWork.Book.GetFirstOrDefaultAsync(book => book.Id == Id, includeProperties: "Author,Size,Tags,Publisher") ?? new();
                     Title = "Update";
                     OldImageUrl = Book.Avatar;
                 }
