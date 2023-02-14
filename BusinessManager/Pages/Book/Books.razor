@@ -47,7 +47,7 @@
                 <MudLink Href="@($"/books/edit/{context.Id}")">
                     <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Outlined.Edit" Class="pa-0 flex-auto" />
                 </MudLink>
-                <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Outlined.Delete" Class="pa-0 flex-auto" />
+                <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Outlined.Delete" @onclick="(e) => DeleteItemAsync(context)" Class="pa-0 flex-auto" />
             </div>
         </MudTd>
     </RowTemplate>
