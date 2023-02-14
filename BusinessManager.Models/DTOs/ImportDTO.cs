@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BusinessManager.Models.DTOs
 {
-    public class BookCostDTO : BaseDTO
+    public class ImportDTO : BaseDTO
     {
         public int Id { get; set; }
 

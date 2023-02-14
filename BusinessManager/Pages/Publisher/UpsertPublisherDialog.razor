@@ -2,7 +2,7 @@
 @inject IUnitOfWork UnitOfWork
 <MudDialog>
     <TitleContent>
-        @if (item!.Id == 0)
+        @if (Item!.Id == 0)
         {
             <MudText Typo="Typo.h6">
                 <MudIcon Icon="@Icons.Material.Filled.Add" Class="mr-3 mb-n1" />
@@ -18,16 +18,16 @@
         }
     </TitleContent>
     <DialogContent>
-        <EditForm Model="item" OnValidSubmit="OnValidSubmit" id="add-publisher">
+        <EditForm Model="Item" OnValidSubmit="OnValidSubmit" id="add-publisher">
             <DataAnnotationsValidator />
-            <MudTextField Label="Name" @bind-Value="item!.Name" For="@(() => item!.Name)" />
-            <MudTextField Label="Address" @bind-Value="item!.Address" For="@(() => item!.Address)" />
-            <MudTextField Label="Phone" @bind-Value="item!.Phone" For="@(() => item!.Phone)" InputType="InputType.Telephone"/>
+            <MudTextField Label="Name" @bind-Value="Item!.Name" For="@(() => Item!.Name)" />
+            <MudTextField Label="Address" @bind-Value="Item!.Address" For="@(() => Item!.Address)" />
+            <MudTextField Label="Phone" @bind-Value="Item!.Phone" For="@(() => Item!.Phone)" InputType="InputType.Telephone"/>
         </EditForm>
     </DialogContent>
     <DialogActions>
         <MudButton OnClick="Cancel" Disabled="isDisabled">Cancel</MudButton>
-        @if (item!.Id == 0)
+        @if (Item!.Id == 0)
         {
             <MudButton Color="Color.Primary" ButtonType="ButtonType.Submit" Disabled="isDisabled" form="add-publisher">Add</MudButton>
         }
@@ -41,19 +41,18 @@
     [CascadingParameter] MudDialogInstance MudDialog { get; set; }
     private bool isDisabled = false;
 
-    [Parameter] public PublisherDTO? item { get; set; } = new();
+    [Parameter] public PublisherDTO? Item { get; set; } = new();
 
     private async void OnValidSubmit(EditContext editContext)
     {
         isDisabled = true;
         bool result;
-        if (item!.Id == 0)
+        if (Item!.Id == 0)
         {
-            result = await UnitOfWork.Publisher.CreateAsync(item);
+            result = await UnitOfWork.Publisher.CreateAsync(Item);
             if (result)
             {
                 Snackbar.Add("Added Successfully", Severity.Success);
-                await UnitOfWork.SaveAsync();
             }
             else
             {
@@ -62,7 +61,7 @@
         }
         else
         {
-            result = await UnitOfWork.Publisher.UpdateAsync(item);
+            result = await UnitOfWork.Publisher.UpdateAsync(Item);
             if (result)
             {
                 Snackbar.Add("Updated Successfully", Severity.Success);
@@ -73,7 +72,7 @@
             }
         }
         isDisabled = false;
-        MudDialog.Close(DialogResult.Ok(item));
+        MudDialog.Close(DialogResult.Ok(Item));
     }
 
     private void Cancel() => MudDialog.Cancel();

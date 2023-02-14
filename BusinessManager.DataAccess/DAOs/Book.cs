@@ -26,13 +26,13 @@ namespace BusinessManager.DataAccess.DAOs
         public int AuthorId { get; set; }
         public Author? Author { get; set; }
 
-        [ForeignKey("BookSize")]
-        public int BookSizeId { get; set; }
-        public Size? BookSize { get; set; }
+        [ForeignKey("Size")]
+        public int SizeId { get; set; }
+        public Size? Size { get; set; }
         public double Price { get; set; }
         public double Discount { get; set; }
         public DateTime PublishedDate { get; set; }
-        public ICollection<Cost>? Costs { get; set; }
+        public ICollection<Import>? Costs { get; set; }
        
         public ICollection<Tag> Tags { get; set; } = new List<Tag>();
     }

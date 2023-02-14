@@ -15,7 +15,7 @@ namespace BusinessManagerWeb.Pages.Author
 
         private string searchString = "";
         private AuthorDTO selectedItem = new();
-        private List<AuthorDTO> elements = new();
+        private List<AuthorDTO> itemList = new();
         private bool isLoading = false;
 
         protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -34,13 +34,13 @@ namespace BusinessManagerWeb.Pages.Author
         private async Task GetItemListAsync()
         {
             var enumerable = await UnitOfWork.Author.GetAllAsync();
-            elements = enumerable.ToList();
+            itemList = enumerable.OrderByDescending(item => item.Id).ToList();
         }
 
         private async Task OpenUpsertDialog(AuthorDTO? itemDTO)
         {
             //Setting Dialog
-            var parameter = new DialogParameters { ["item"] = itemDTO };
+            var parameter = new DialogParameters { ["Item"] = itemDTO };
             var options = new DialogOptions { DisableBackdropClick = true };
             var dialog = await DialogService.ShowAsync<UpsertAuthorDialog>("", parameter, options);
             //Get Dialog result
@@ -55,7 +55,7 @@ namespace BusinessManagerWeb.Pages.Author
                 if (result != null)
                 {
                     //Check that is the object exist in list
-                    var obj = elements.Find(e => e.Name == result.Name);
+                    var obj = itemList.Find(e => e.Name == result.Name);
                     if (obj != null)
                     {
                         //Change data if exist
@@ -79,7 +79,7 @@ namespace BusinessManagerWeb.Pages.Author
                 { "ContentText", "Do you really want to delete this item? This process cannot be undone." },
                 { "ButtonText", "Delete" },
                 { "Color", Color.Error },
-                { "item" , itemDTO}
+                { "Item" , itemDTO}
             };
             var options = new DialogOptions() { CloseButton = true, MaxWidth = MaxWidth.ExtraSmall };
             var dialog = DialogService.Show<DeleteAuthorDialog>("Delete Item", parameters, options);
@@ -93,7 +93,7 @@ namespace BusinessManagerWeb.Pages.Author
                 var result = (bool)resultFromDialog.Data;
                 if (result)
                 {
-                    elements.Remove(itemDTO);
+                    itemList.Remove(itemDTO);
                 }
             }
         }
@@ -112,7 +112,7 @@ namespace BusinessManagerWeb.Pages.Author
             var getData = await UnitOfWork.Author.GetFirstOrDefaultAsync(tag => tag.Name == authorDTO.Name);
             if (getData != null)
             {
-                elements.Insert(0, getData);
+                itemList.Insert(0, getData);
             }
         }
     }

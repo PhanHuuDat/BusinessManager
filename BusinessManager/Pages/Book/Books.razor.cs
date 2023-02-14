@@ -1,5 +1,6 @@
 ﻿using BusinessManager.Business.Repositories.IRepositories;
 using BusinessManager.Models.DTOs;
+using BusinessManagerWeb.Pages.BookSize;
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
 
@@ -32,7 +33,7 @@ namespace BusinessManagerWeb.Pages.Book
 
         private async Task GetItemListAsync()
         {
-            var enumerable = await UnitOfWork.Book.GetAllAsync(includeProperties: "Author,BookSize,Tags,Publisher");
+            var enumerable = await UnitOfWork.Book.GetAllAsync(includeProperties: "Author,Size,Tags,Publisher");
             elements = enumerable.ToList();
         }
 
@@ -47,12 +48,32 @@ namespace BusinessManagerWeb.Pages.Book
             return false;
         }
 
-        private async Task GetEntity(BookDTO itemDTO)
+       
+
+        private async Task DeleteItemAsync(BookDTO itemDTO)
         {
-            var data = await UnitOfWork.Book.GetFirstOrDefaultAsync(tag => tag.Title == itemDTO.Title);
-            if (data != null)
+            //Setting Dialog
+            var parameters = new DialogParameters
             {
-                elements.Insert(0, data);
+                { "ContentText", "Do you really want to delete this item? This process cannot be undone." },
+                { "ButtonText", "Delete" },
+                { "Color", Color.Error },
+                { "Item" , itemDTO}
+            };
+            var options = new DialogOptions() { CloseButton = true, MaxWidth = MaxWidth.ExtraSmall };
+            var dialog = DialogService.Show<DeleteBookDialog>("Delete Item", parameters, options);
+
+            //Get Dialog result
+            var resultFromDialog = await dialog.Result;
+
+            //Handle returned value
+            if (!resultFromDialog.Canceled)
+            {
+                var result = (bool)resultFromDialog.Data;
+                if (result)
+                {
+                    elements.Remove(itemDTO);
+                }
             }
         }
     }

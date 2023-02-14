@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BusinessManager.DataAccess.DAOs
 {
-    public class Cost : BaseDAO
+    public class Import : BaseDAO
     {
         [Key]
         public int Id { get; set; }
@@ -16,6 +16,6 @@ namespace BusinessManager.DataAccess.DAOs
         [Required]
         public int Quantity { get; set; }
         [Required]
-        public DateTimeOffset ImportDate { get; set; }
+        public DateTime ImportDate { get; set; }
     }
 }

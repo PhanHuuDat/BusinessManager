@@ -20,18 +20,17 @@
 
     [Parameter] public Color Color { get; set; }
 
-    [Parameter] public BookSizeDTO item { get; set; }
+    [Parameter] public BookSizeDTO Item { get; set; }
 
     private bool isDisabled = false;
 
     private async void Submit()
     {
         isDisabled = true;
-        var deleteResult = await UnitOfWork.BookSize.DeleteAsync(item);
+        var deleteResult = await UnitOfWork.Size.DeleteAsync(Item);
         if (deleteResult)
         {
             Snackbar.Add("Deleted Successfully", Severity.Success);
-            await UnitOfWork.SaveAsync();
         }
         else
         {

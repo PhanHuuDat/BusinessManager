@@ -28,6 +28,7 @@ namespace BusinessManager.Business.Repositories.Implements
                 objFromDb.SizeValue = entity.SizeValue;
                 objFromDb.UpdatedDate = DateTimeOffset.UtcNow;
                 var result = await Task.Run(() => _db.Update(objFromDb));
+                await _db.SaveChangesAsync();
                 return true;
             }
 

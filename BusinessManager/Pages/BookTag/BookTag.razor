@@ -5,7 +5,7 @@
 
 <PageTitle>Book Tag List</PageTitle>
 
-<MudTable Items="@elements" Hover="true" Striped="true" @bind-SelectedItem="selectedItem" Loading="isLoading"
+<MudTable Items="@itemList" Hover="true" Striped="true" @bind-SelectedItem="selectedItem" Loading="isLoading"
           Filter="new Func<TagDTO,bool>(FilterFunc)">
     <LoadingContent>
         <MudProgressCircular Color="Color.Default" Indeterminate="true" />

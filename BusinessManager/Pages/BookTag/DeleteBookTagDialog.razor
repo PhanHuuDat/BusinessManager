@@ -20,18 +20,17 @@
 
     [Parameter] public Color Color { get; set; }
 
-    [Parameter] public TagDTO item { get; set; }
+    [Parameter] public TagDTO Item { get; set; }
 
     private bool isDisabled = false;
 
     private async void Submit()
     {
         isDisabled = true;
-        var deleteResult = await UnitOfWork.BookTag.DeleteAsync(item);
+        var deleteResult = await UnitOfWork.Tag.DeleteAsync(Item);
         if (deleteResult)
         {
             Snackbar.Add("Deleted Successfully", Severity.Success);
-            await UnitOfWork.SaveAsync();
         }
         else
         {

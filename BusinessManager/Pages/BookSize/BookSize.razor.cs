@@ -32,14 +32,14 @@ namespace BusinessManagerWeb.Pages.BookSize
 
         private async Task GetItemListAsync()
         {
-            var enumerable = await UnitOfWork.BookSize.GetAllAsync();
-            elements = enumerable.ToList();
+            var enumerable = await UnitOfWork.Size.GetAllAsync();
+            elements = enumerable.OrderByDescending(item => item.Id).ToList();
         }
 
         private async Task OpenUpsertDialog(BookSizeDTO? itemDTO)
         {
             //Setting Dialog
-            var parameter = new DialogParameters { ["item"] = itemDTO };
+            var parameter = new DialogParameters { ["Item"] = itemDTO };
             var options = new DialogOptions { DisableBackdropClick = true };
             var dialog = await DialogService.ShowAsync<UpsertBookSizeDialog>("", parameter, options);
             //Get Dialog result
@@ -78,7 +78,7 @@ namespace BusinessManagerWeb.Pages.BookSize
                 { "ContentText", "Do you really want to delete this item? This process cannot be undone." },
                 { "ButtonText", "Delete" },
                 { "Color", Color.Error },
-                { "item" , itemDTO}
+                { "Item" , itemDTO}
             };
             var options = new DialogOptions() { CloseButton = true, MaxWidth = MaxWidth.ExtraSmall };
             var dialog = DialogService.Show<DeleteBookSizeDialog>("Delete Item", parameters, options);
@@ -108,7 +108,7 @@ namespace BusinessManagerWeb.Pages.BookSize
 
         private async Task GetEntity(BookSizeDTO itemDTO)
         {
-            var data = await UnitOfWork.BookSize.GetFirstOrDefaultAsync(tag => tag.SizeValue == itemDTO.SizeValue);
+            var data = await UnitOfWork.Size.GetFirstOrDefaultAsync(tag => tag.SizeValue == itemDTO.SizeValue);
             if (data != null)
             {
                 elements.Insert(0, data);

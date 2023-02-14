@@ -15,7 +15,7 @@ namespace BusinessManagerWeb.Pages.BookTag
 
         private string searchString = "";
         private TagDTO selectedItem = new();
-        private List<TagDTO> elements = new();
+        private List<TagDTO> itemList = new();
         private bool isLoading = false;
 
         protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -33,14 +33,14 @@ namespace BusinessManagerWeb.Pages.BookTag
 
         private async Task GetItemListAsync()
         {
-            var enumerable = await unitOfWork.BookTag.GetAllAsync();
-            elements = enumerable.ToList();
+            var enumerable = await unitOfWork.Tag.GetAllAsync();
+            itemList = enumerable.OrderByDescending(item => item.Id).ToList();
         }
 
         private async Task OpenUpsertDialog(TagDTO? itemDTO)
         {
             //Setting Dialog
-            var parameter = new DialogParameters { ["item"] = itemDTO };
+            var parameter = new DialogParameters { ["Item"] = itemDTO };
             var options = new DialogOptions { DisableBackdropClick = true };
             var dialog = await DialogService.ShowAsync<UpsertBookTagDialog>("", parameter, options);
             //Get Dialog result
@@ -55,7 +55,7 @@ namespace BusinessManagerWeb.Pages.BookTag
                 if (result != null)
                 {
                     //Check that is the object exist in list
-                    var obj = elements.Find(e => e.Name == result.Name);
+                    var obj = itemList.Find(e => e.Name == result.Name);
                     if (obj != null)
                     {
                         //Change data if exist
@@ -78,7 +78,7 @@ namespace BusinessManagerWeb.Pages.BookTag
                 { "ContentText", "Do you really want to delete this item? This process cannot be undone." },
                 { "ButtonText", "Delete" },
                 { "Color", Color.Error },
-                { "item", itemDTO}
+                { "Item", itemDTO}
             };
             var options = new DialogOptions() { CloseButton = true, MaxWidth = MaxWidth.ExtraSmall };
             var dialog = DialogService.Show<DeleteBookTagDialog>("Delete Item", parameters, options);
@@ -92,7 +92,7 @@ namespace BusinessManagerWeb.Pages.BookTag
                 var result = (bool)resultFromDialog.Data;
                 if (result)
                 {
-                    elements.Remove(itemDTO);
+                    itemList.Remove(itemDTO);
                 }
             }
         }
@@ -108,10 +108,10 @@ namespace BusinessManagerWeb.Pages.BookTag
 
         private async Task GetEntity(TagDTO itemDTO)
         {
-            var data = await unitOfWork.BookTag.GetFirstOrDefaultAsync(tag => tag.Name == itemDTO.Name);
+            var data = await unitOfWork.Tag.GetFirstOrDefaultAsync(tag => tag.Name == itemDTO.Name);
             if (data != null)
             {
-                elements.Insert(0, data);
+                itemList.Insert(0, data);
             }
         }
     }

@@ -3,6 +3,7 @@ using BusinessManager.Business.Repositories.IRepositories;
 using BusinessManager.DataAccess.DAOs;
 using BusinessManager.DataAccess.Data;
 using BusinessManager.Models.DTOs;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,9 +19,20 @@ namespace BusinessManager.Business.Repositories.Implements
         {
             
         }
-        public Task<bool> UpdateAsync(AuthorDTO entity)
+        public async Task<bool> UpdateAsync(AuthorDTO entity)
         {
-            throw new NotImplementedException();
+            var objFromDb = await _db.Author.FirstOrDefaultAsync(c => c.Id == entity.Id);
+
+            if (objFromDb != null)
+            {
+                objFromDb.Name = entity.Name;
+                objFromDb.UpdatedDate = DateTimeOffset.UtcNow;
+                var result = await Task.Run(() => _db.Update(objFromDb));
+                await _db.SaveChangesAsync();
+                return true;
+            }
+
+            return false;
         }
     }
 }

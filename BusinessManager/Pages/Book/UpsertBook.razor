@@ -41,8 +41,8 @@
                         }
                     </MudSelect>
                     @*Book Size*@
-                    <MudSelect T="int?" Required="true" @bind-Value="Book.BookSizeId"
-                           Label="Book Size" AnchorOrigin="Origin.BottomCenter" For="@(() =>Book!.BookSizeId)">
+                    <MudSelect T="int?" Required="true" @bind-Value="Book.SizeId"
+                           Label="Book Size" AnchorOrigin="Origin.BottomCenter" For="@(() =>Book!.SizeId)">
                         @foreach (var bookSize in bookSizes)
                         {
                             <MudSelectItem Value="@bookSize.Id">@bookSize.SizeValue</MudSelectItem>
