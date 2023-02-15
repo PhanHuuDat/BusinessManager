@@ -112,6 +112,10 @@ namespace BusinessManagerWeb.Pages.Publisher
                 return true;
             if (item.Name.Contains(searchString, StringComparison.OrdinalIgnoreCase))
                 return true;
+            if (item.Address.Contains(searchString, StringComparison.OrdinalIgnoreCase))
+                return true;
+            if (item.Phone.Contains(searchString, StringComparison.OrdinalIgnoreCase))
+                return true;
             return false;
         }
 
