@@ -8,7 +8,6 @@ namespace BusinessManager.Business.Repositories.IRepositories
     {
         Task<bool> CreateAsync(T entity);
         Task<bool> CreateRangeAsync(IEnumerable<T> entities);
-        Task<bool> DeleteAsync(T entity);
         Task<bool> DeleteAsync(int entityId);
         Task<bool> DeleteRangeAsync(IEnumerable<T> entites);
         Task<IEnumerable<T>> GetAllAsync(Expression<Func<U, bool>>? filter = null,

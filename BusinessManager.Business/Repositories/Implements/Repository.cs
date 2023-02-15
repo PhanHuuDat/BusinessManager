@@ -38,26 +38,6 @@ namespace BusinessManager.Business.Repositories.Implements
 
         }
 
-        public virtual async Task<bool> DeleteAsync(T entity)
-        {
-            U obj = _mapper.Map<U>(entity);
-
-            try
-            {
-                //_db.Entry(obj).State= EntityState.Detached;
-                //dbSet.Remove(obj);
-                //var item =  dbSet.Find(2);
-                dbSet.Remove(obj);
-                await _db.SaveChangesAsync();
-                return true;
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.ToString());
-                return false;
-            }
-        }
-
         public virtual async Task<bool> DeleteAsync(int entityId)
         {
             
