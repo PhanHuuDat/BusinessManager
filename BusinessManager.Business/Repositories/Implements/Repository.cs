@@ -13,7 +13,7 @@ namespace BusinessManager.Business.Repositories.Implements
         protected readonly ApplicationDbContext _db;
         protected readonly DbSet<U> dbSet;
         protected readonly IMapper _mapper;
-        
+
         public Repository(ApplicationDbContext db, IMapper mapper)
         {
             _db = db;
@@ -26,7 +26,7 @@ namespace BusinessManager.Business.Repositories.Implements
 
             try
             {
-                dbSet.Attach(obj);
+                await dbSet.AddAsync(obj);
                 await _db.SaveChangesAsync();
                 return true;
             }
@@ -40,11 +40,31 @@ namespace BusinessManager.Business.Repositories.Implements
 
         public virtual async Task<bool> DeleteAsync(T entity)
         {
-           U obj = _mapper.Map<U>(entity);
+            U obj = _mapper.Map<U>(entity);
 
             try
             {
-                await Task.Run(() => dbSet.Remove(obj!));
+                _db.Entry(obj).State= EntityState.Detached;
+                //dbSet.Remove(obj);
+                //var item =  dbSet.Find(2);
+                dbSet.Remove(obj);
+                await _db.SaveChangesAsync();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+                return false;
+            }
+        }
+
+        public virtual async Task<bool> DeleteAsync(int entityId)
+        {
+            
+            try
+            {
+                var item = await dbSet.FindAsync(entityId);
+                dbSet.Remove(item!);
                 await _db.SaveChangesAsync();
                 return true;
             }
@@ -72,13 +92,15 @@ namespace BusinessManager.Business.Repositories.Implements
         }
 
         public virtual async Task<IEnumerable<T>> GetAllAsync(Expression<Func<U, bool>>? filter = null,
-            string? includeProperties = null)
+            string? includeProperties = null, bool isTracking = true)
         {
-            IQueryable<U> query = dbSet.AsNoTracking();
+            IQueryable<U> query = dbSet;
+
             if (filter != null)
             {
                 query = query.Where(filter);
             }
+
             if (includeProperties != null)
             {
                 //abc,,xyz -> abc xyz
@@ -87,19 +109,26 @@ namespace BusinessManager.Business.Repositories.Implements
                 {
                     query = query.Include(includeProperty);
                 }
+            }
+
+            if (!isTracking)
+            {
+                query.AsNoTracking();
             }
 
             return _mapper.Map<IEnumerable<U>, IEnumerable<T>>(await query.ToListAsync());
         }
 
-        public virtual async Task<T> GetFirstOrDefaultAsync(Expression<Func<U, bool>>? filter = null, string? includeProperties = null)
+        public virtual async Task<T> GetFirstOrDefaultAsync(Expression<Func<U, bool>>? filter = null, string? includeProperties = null,
+            bool isTracking = true)
         {
-
             IQueryable<U> query = dbSet;
+
             if (filter != null)
             {
                 query = query.Where(filter);
             }
+
             if (includeProperties != null)
             {
                 //abc,,xyz -> abc xyz
@@ -108,6 +137,11 @@ namespace BusinessManager.Business.Repositories.Implements
                 {
                     query = query.Include(includeProperty);
                 }
+            }
+
+            if (!isTracking)
+            {
+                query.AsNoTracking();
             }
             var result = await query.FirstOrDefaultAsync();
             return _mapper.Map<T>(result);
@@ -118,6 +152,6 @@ namespace BusinessManager.Business.Repositories.Implements
             throw new NotImplementedException();
         }
 
-        
+
     }
 }
