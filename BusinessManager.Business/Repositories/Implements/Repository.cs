@@ -44,7 +44,7 @@ namespace BusinessManager.Business.Repositories.Implements
 
             try
             {
-                _db.Entry(obj).State= EntityState.Detached;
+                //_db.Entry(obj).State= EntityState.Detached;
                 //dbSet.Remove(obj);
                 //var item =  dbSet.Find(2);
                 dbSet.Remove(obj);
