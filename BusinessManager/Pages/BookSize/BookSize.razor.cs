@@ -33,7 +33,7 @@ namespace BusinessManagerWeb.Pages.BookSize
 
         private async Task GetItemListAsync()
         {
-            var enumerable = await UnitOfWork.Size.GetAllAsync();
+            var enumerable = await UnitOfWork.Size.GetAllAsync(isTracking: false);
             itemList = enumerable.OrderByDescending(item => item.Id).ToList();
         }
 
@@ -118,7 +118,7 @@ namespace BusinessManagerWeb.Pages.BookSize
 
         private async Task GetEntity(BookSizeDTO itemDTO)
         {
-            var data = await UnitOfWork.Size.GetFirstOrDefaultAsync(tag => tag.SizeValue == itemDTO.SizeValue);
+            var data = await UnitOfWork.Size.GetFirstOrDefaultAsync(tag => tag.SizeValue == itemDTO.SizeValue, isTracking: false);
             if (data != null)
             {
                 itemList.Insert(0, data);

@@ -34,7 +34,7 @@ namespace BusinessManagerWeb.Pages.Author
 
         private async Task GetItemListAsync()
         {
-            var enumerable = await UnitOfWork.Author.GetAllAsync();
+            var enumerable = await UnitOfWork.Author.GetAllAsync(isTracking: false);
             itemList = enumerable.OrderByDescending(item => item.Id).ToList();
         }
 
@@ -118,7 +118,7 @@ namespace BusinessManagerWeb.Pages.Author
 
         private async Task GetEntity(AuthorDTO authorDTO)
         {
-            var getData = await UnitOfWork.Author.GetFirstOrDefaultAsync(tag => tag.Name == authorDTO.Name);
+            var getData = await UnitOfWork.Author.GetFirstOrDefaultAsync(tag => tag.Name == authorDTO.Name, isTracking: false);
             if (getData != null)
             {
                 itemList.Insert(0, getData);
