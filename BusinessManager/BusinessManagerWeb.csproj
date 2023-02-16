@@ -23,7 +23,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Pages\Book\Import\" />
     <Folder Include="wwwroot\images\book\" />
   </ItemGroup>
 

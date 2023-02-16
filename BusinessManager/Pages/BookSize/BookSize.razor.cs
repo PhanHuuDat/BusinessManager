@@ -1,5 +1,6 @@
 ﻿using BusinessManager.Business.Repositories.IRepositories;
 using BusinessManager.Models.DTOs;
+using BusinessManagerWeb.Shared.Components;
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
 
@@ -14,7 +15,7 @@ namespace BusinessManagerWeb.Pages.BookSize
 
         private string searchString = "";
         private BookSizeDTO selectedItem = new();
-        private List<BookSizeDTO> elements = new();
+        private List<BookSizeDTO> itemList = new();
         private bool isLoading = false;
 
         protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -32,8 +33,8 @@ namespace BusinessManagerWeb.Pages.BookSize
 
         private async Task GetItemListAsync()
         {
-            var enumerable = await UnitOfWork.Size.GetAllAsync();
-            elements = enumerable.OrderByDescending(item => item.Id).ToList();
+            var enumerable = await UnitOfWork.Size.GetAllAsync(isTracking: false);
+            itemList = enumerable.OrderByDescending(item => item.Id).ToList();
         }
 
         private async Task OpenUpsertDialog(BookSizeDTO? itemDTO)
@@ -54,7 +55,7 @@ namespace BusinessManagerWeb.Pages.BookSize
                 if (result != null)
                 {
                     //Check that is the object exist in list
-                    var obj = elements.Find(e => e.SizeValue == result.SizeValue);
+                    var obj = itemList.Find(e => e.SizeValue == result.SizeValue);
                     if (obj != null)
                     {
                         //Change data if exist
@@ -81,7 +82,7 @@ namespace BusinessManagerWeb.Pages.BookSize
                 { "Item" , itemDTO}
             };
             var options = new DialogOptions() { CloseButton = true, MaxWidth = MaxWidth.ExtraSmall };
-            var dialog = DialogService.Show<DeleteBookSizeDialog>("Delete Item", parameters, options);
+            var dialog = DialogService.Show<SimpleDialog>("Delete Item", parameters, options);
 
             //Get Dialog result
             var resultFromDialog = await dialog.Result;
@@ -89,11 +90,20 @@ namespace BusinessManagerWeb.Pages.BookSize
             //Handle returned value
             if (!resultFromDialog.Canceled)
             {
-                var result = (bool)resultFromDialog.Data;
-                if (result)
+                isLoading = true;
+                StateHasChanged();
+                var deleteResult = await UnitOfWork.Size.DeleteAsync((int)itemDTO.Id!);
+                if (deleteResult)
                 {
-                    elements.Remove(itemDTO);
+                    Snackbar.Add("Deleted Successfully", Severity.Success);
+                    itemList.Remove(itemDTO);
                 }
+                else
+                {
+                    Snackbar.Add("Deleted Failed", Severity.Error);
+                }
+                isLoading = false;
+                StateHasChanged();
             }
         }
 
@@ -108,10 +118,10 @@ namespace BusinessManagerWeb.Pages.BookSize
 
         private async Task GetEntity(BookSizeDTO itemDTO)
         {
-            var data = await UnitOfWork.Size.GetFirstOrDefaultAsync(tag => tag.SizeValue == itemDTO.SizeValue);
+            var data = await UnitOfWork.Size.GetFirstOrDefaultAsync(tag => tag.SizeValue == itemDTO.SizeValue, isTracking: false);
             if (data != null)
             {
-                elements.Insert(0, data);
+                itemList.Insert(0, data);
             }
         }
     }

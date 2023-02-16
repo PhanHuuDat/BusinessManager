@@ -1,8 +1,10 @@
 ﻿using BusinessManager.Business.Repositories.IRepositories;
 using BusinessManager.Models.DTOs;
 using BusinessManagerWeb.Pages.BookSize;
+using BusinessManagerWeb.Shared.Components;
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
+using static MudBlazor.CategoryTypes;
 
 namespace BusinessManagerWeb.Pages.Book
 {
@@ -15,7 +17,7 @@ namespace BusinessManagerWeb.Pages.Book
 
         private string searchString = "";
         private BookDTO selectedItem = new();
-        private List<BookDTO> elements = new();
+        private List<BookDTO> itemList = new();
         private bool isLoading = false;
 
         protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -33,11 +35,9 @@ namespace BusinessManagerWeb.Pages.Book
 
         private async Task GetItemListAsync()
         {
-            var enumerable = await UnitOfWork.Book.GetAllAsync(includeProperties: "Author,Size,Tags,Publisher");
-            elements = enumerable.ToList();
+            var enumerable = await UnitOfWork.Book.GetAllAsync(includeProperties: "Author,Size,Tags,Publisher", isTracking: false);
+            itemList = enumerable.ToList();
         }
-
-
 
         private bool FilterFunc(BookDTO item)
         {
@@ -48,8 +48,6 @@ namespace BusinessManagerWeb.Pages.Book
             return false;
         }
 
-       
-
         private async Task DeleteItemAsync(BookDTO itemDTO)
         {
             //Setting Dialog
@@ -57,11 +55,10 @@ namespace BusinessManagerWeb.Pages.Book
             {
                 { "ContentText", "Do you really want to delete this item? This process cannot be undone." },
                 { "ButtonText", "Delete" },
-                { "Color", Color.Error },
-                { "Item" , itemDTO}
+                { "Color", Color.Error }
             };
             var options = new DialogOptions() { CloseButton = true, MaxWidth = MaxWidth.ExtraSmall };
-            var dialog = DialogService.Show<DeleteBookDialog>("Delete Item", parameters, options);
+            var dialog =  await DialogService.ShowAsync<SimpleDialog>("Delete Item", parameters, options);
 
             //Get Dialog result
             var resultFromDialog = await dialog.Result;
@@ -69,11 +66,20 @@ namespace BusinessManagerWeb.Pages.Book
             //Handle returned value
             if (!resultFromDialog.Canceled)
             {
-                var result = (bool)resultFromDialog.Data;
-                if (result)
+                isLoading = true;
+                StateHasChanged();
+                var deleteResult = await UnitOfWork.Book.DeleteAsync(itemDTO.Id);
+                if (deleteResult)
                 {
-                    elements.Remove(itemDTO);
+                    Snackbar.Add("Deleted Successfully", Severity.Success);
+                    itemList.Remove(itemDTO);
                 }
+                else
+                {
+                    Snackbar.Add("Deleted Failed", Severity.Error);
+                }
+                isLoading = false;
+                StateHasChanged();
             }
         }
     }

@@ -1,5 +1,6 @@
 ﻿using BusinessManager.Business.Repositories.IRepositories;
 using BusinessManager.Models.DTOs;
+using BusinessManagerWeb.Shared.Components;
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
 
@@ -33,7 +34,7 @@ namespace BusinessManagerWeb.Pages.Author
 
         private async Task GetItemListAsync()
         {
-            var enumerable = await UnitOfWork.Author.GetAllAsync();
+            var enumerable = await UnitOfWork.Author.GetAllAsync(isTracking: false);
             itemList = enumerable.OrderByDescending(item => item.Id).ToList();
         }
 
@@ -78,11 +79,10 @@ namespace BusinessManagerWeb.Pages.Author
             {
                 { "ContentText", "Do you really want to delete this item? This process cannot be undone." },
                 { "ButtonText", "Delete" },
-                { "Color", Color.Error },
-                { "Item" , itemDTO}
+                { "Color", Color.Error }
             };
             var options = new DialogOptions() { CloseButton = true, MaxWidth = MaxWidth.ExtraSmall };
-            var dialog = DialogService.Show<DeleteAuthorDialog>("Delete Item", parameters, options);
+            var dialog = DialogService.Show<SimpleDialog>("Delete Item", parameters, options);
 
             //Get Dialog result
             var resultFromDialog = await dialog.Result;
@@ -90,11 +90,20 @@ namespace BusinessManagerWeb.Pages.Author
             //Handle returned value
             if (!resultFromDialog.Canceled)
             {
-                var result = (bool)resultFromDialog.Data;
-                if (result)
+                isLoading = true;
+                StateHasChanged();
+                var deleteResult = await UnitOfWork.Author.DeleteAsync((int)itemDTO.Id!);
+                if (deleteResult)
                 {
+                    Snackbar.Add("Deleted Successfully", Severity.Success);
                     itemList.Remove(itemDTO);
                 }
+                else
+                {
+                    Snackbar.Add("Deleted Failed", Severity.Error);
+                }
+                isLoading = false;
+                StateHasChanged();
             }
         }
 
@@ -109,7 +118,7 @@ namespace BusinessManagerWeb.Pages.Author
 
         private async Task GetEntity(AuthorDTO authorDTO)
         {
-            var getData = await UnitOfWork.Author.GetFirstOrDefaultAsync(tag => tag.Name == authorDTO.Name);
+            var getData = await UnitOfWork.Author.GetFirstOrDefaultAsync(tag => tag.Name == authorDTO.Name, isTracking: false);
             if (getData != null)
             {
                 itemList.Insert(0, getData);

@@ -1,5 +1,6 @@
 ﻿using BusinessManager.Business.Repositories.IRepositories;
 using BusinessManager.Models.DTOs;
+using BusinessManagerWeb.Shared.Components;
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
 
@@ -9,7 +10,7 @@ namespace BusinessManagerWeb.Pages.BookTag
     {
 
 #pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
-        [Inject] protected IUnitOfWork unitOfWork { get; set; }
+        [Inject] protected IUnitOfWork UnitOfWork { get; set; }
         [Inject] protected IDialogService DialogService { get; set; }
 #pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
 
@@ -33,7 +34,7 @@ namespace BusinessManagerWeb.Pages.BookTag
 
         private async Task GetItemListAsync()
         {
-            var enumerable = await unitOfWork.Tag.GetAllAsync();
+            var enumerable = await UnitOfWork.Tag.GetAllAsync(isTracking: false);
             itemList = enumerable.OrderByDescending(item => item.Id).ToList();
         }
 
@@ -78,10 +79,9 @@ namespace BusinessManagerWeb.Pages.BookTag
                 { "ContentText", "Do you really want to delete this item? This process cannot be undone." },
                 { "ButtonText", "Delete" },
                 { "Color", Color.Error },
-                { "Item", itemDTO}
             };
             var options = new DialogOptions() { CloseButton = true, MaxWidth = MaxWidth.ExtraSmall };
-            var dialog = DialogService.Show<DeleteBookTagDialog>("Delete Item", parameters, options);
+            var dialog = DialogService.Show<SimpleDialog>("Delete Item", parameters, options);
 
             //Get Dialog result
             var resultFromDialog = await dialog.Result;
@@ -89,11 +89,20 @@ namespace BusinessManagerWeb.Pages.BookTag
             //Handle returned value
             if (!resultFromDialog.Canceled)
             {
-                var result = (bool)resultFromDialog.Data;
-                if (result)
+                isLoading = true;
+                StateHasChanged();
+                var deleteResult = await UnitOfWork.Tag.DeleteAsync((int)itemDTO.Id!);
+                if (deleteResult)
                 {
+                    Snackbar.Add("Deleted Successfully", Severity.Success);
                     itemList.Remove(itemDTO);
                 }
+                else
+                {
+                    Snackbar.Add("Deleted Failed", Severity.Error);
+                }
+                isLoading = false;
+                StateHasChanged();
             }
         }
 
@@ -108,7 +117,7 @@ namespace BusinessManagerWeb.Pages.BookTag
 
         private async Task GetEntity(TagDTO itemDTO)
         {
-            var data = await unitOfWork.Tag.GetFirstOrDefaultAsync(tag => tag.Name == itemDTO.Name);
+            var data = await UnitOfWork.Tag.GetFirstOrDefaultAsync(tag => tag.Name == itemDTO.Name, isTracking: false);
             if (data != null)
             {
                 itemList.Insert(0, data);
