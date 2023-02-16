@@ -40,7 +40,6 @@ namespace BusinessManager.Business.Repositories.Implements
 
         public virtual async Task<bool> DeleteAsync(int entityId)
         {
-            
             try
             {
                 var item = await dbSet.FindAsync(entityId);
