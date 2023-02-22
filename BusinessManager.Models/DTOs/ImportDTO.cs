@@ -9,7 +9,6 @@ namespace BusinessManager.Models.DTOs
         public int Id { get; set; }
 
         [Required]
-        [Range(1, int.MaxValue, ErrorMessage = "Please select a book")]
         public int BookId { get; set; }
         public Book? Book { get; set; }
         [Required]
