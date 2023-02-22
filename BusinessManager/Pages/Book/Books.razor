@@ -31,7 +31,7 @@
     <HeaderContent>
         <MudTh>Title</MudTh>
         <MudTh>Publisher</MudTh>
-        <MudTh>Cover Form</MudTh>
+        <MudTh>Size</MudTh>
         <MudTh>Price</MudTh>
         <MudTh>Discount</MudTh>
         <MudTh>Published Date</MudTh>
@@ -39,6 +39,7 @@
     <RowTemplate>
         <MudTd DataLabel="Title">@context.Title</MudTd>
         <MudTd DataLabel="Publisher">@context.Publisher!.Name</MudTd>
+        <MudTd DataLabel="Publisher">@context.Size!.SizeValue</MudTd>
         <MudTd DataLabel="Price">@context.Price</MudTd>
         <MudTd DataLabel="Discount">@(context.Discount)%</MudTd>
         <MudTd DataLabel="Published Date">@context.PublishedDate</MudTd>
