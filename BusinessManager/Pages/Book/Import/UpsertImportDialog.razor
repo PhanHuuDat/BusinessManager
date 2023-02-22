@@ -1,5 +1,81 @@
-﻿<h3>UpsertImportDialog</h3>
+﻿@inject ISnackbar Snackbar
+@inject IUnitOfWork UnitOfWork
+
+<MudDialog>
+    <TitleContent>
+        @if (Item!.Id == 0)
+        {
+            <MudText Typo="Typo.h6">
+                <MudIcon Icon="@Icons.Material.Filled.Add" Class="mr-3 mb-n1" />
+                Add Import
+            </MudText>
+        }
+        else
+        {
+            <MudText Typo="Typo.h6">
+                <MudIcon Icon="@Icons.Material.Filled.Update" Class="mr-3 mb-n1" />
+                Update Import
+            </MudText>
+        }
+    </TitleContent>
+    <DialogContent>
+        <EditForm Model="Item" OnValidSubmit="OnValidSubmit" id="add-import">
+            <DataAnnotationsValidator />
+            <MudNumericField Label="Cost" @bind-Value="Item!.Cost" For="@(() => Item!.Cost)" />
+            <MudNumericField Label="Quantity" @bind-Value="Item!.Quantity" For="@(() => Item!.Quantity)" />
+            <MudTextField Label="Phone" @bind-Value="Item!.ImportDate" For="@(() => Item!.ImportDate)" InputType="InputType.Date" />
+        </EditForm>
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="Cancel" Disabled="isDisabled">Cancel</MudButton>
+        @if (Item!.Id == 0)
+        {
+            <MudButton Color="Color.Primary" ButtonType="ButtonType.Submit" Disabled="isDisabled" form="add-book-tag">Add</MudButton>
+        }
+        else
+        {
+            <MudButton Color="Color.Primary" ButtonType="ButtonType.Submit" Disabled="isDisabled" form="add-book-tag">Update</MudButton>
+        }
+    </DialogActions>
+</MudDialog>
 
 @code {
+    [CascadingParameter] MudDialogInstance MudDialog { get; set; }
+    private bool isDisabled = false;
 
+    [Parameter] public ImportDTO? Item { get; set; } = new();
+
+    private async void OnValidSubmit(EditContext editContext)
+    {
+        isDisabled = true;
+        bool result;
+        if (Item!.Id == 0)
+        {
+            result = await UnitOfWork.Import.CreateAsync(Item);
+            if (result)
+            {
+                Snackbar.Add("Added Successfully", Severity.Success);
+            }
+            else
+            {
+                Snackbar.Add("Added Failed", Severity.Error);
+            }
+        }
+        else
+        {
+            result = await UnitOfWork.Import.UpdateAsync(Item);
+            if (result)
+            {
+                Snackbar.Add("Updated Successfully", Severity.Success);
+            }
+            else
+            {
+                Snackbar.Add("Updated Failed", Severity.Error);
+            }
+        }
+        isDisabled = false;
+        MudDialog.Close(DialogResult.Ok(Item));
+    }
+
+    private void Cancel() => MudDialog.Cancel();
 }

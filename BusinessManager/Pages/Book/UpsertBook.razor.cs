@@ -18,7 +18,7 @@ namespace BusinessManagerWeb.Pages.Book
         {
             Avatar = "/images/default.jpg"
         };
-        public string OldImageUrl { get; set; }
+        public string OldImageUrl { get; set; } = string.Empty;
 
         private IEnumerable<AuthorDTO> authors = Enumerable.Empty<AuthorDTO>();
         private IEnumerable<BookSizeDTO> bookSizes = Enumerable.Empty<BookSizeDTO>();
