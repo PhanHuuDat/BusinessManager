@@ -34,7 +34,7 @@ namespace BusinessManagerWeb.Pages.BookTag
 
         private async Task GetItemListAsync()
         {
-            var enumerable = await UnitOfWork.Tag.GetAllAsync(isTracking: false);
+            var enumerable = await UnitOfWork.Tag.GetAllAsync(isTracking:false);
             itemList = enumerable.OrderByDescending(item => item.Id).ToList();
         }
 
@@ -117,7 +117,7 @@ namespace BusinessManagerWeb.Pages.BookTag
 
         private async Task GetEntity(TagDTO itemDTO)
         {
-            var data = await UnitOfWork.Tag.GetFirstOrDefaultAsync(tag => tag.Name == itemDTO.Name, isTracking: false);
+            var data = await UnitOfWork.Tag.GetFirstOrDefaultAsync(tag => tag.Name == itemDTO.Name, isTracking: false) ;
             if (data != null)
             {
                 itemList.Insert(0, data);

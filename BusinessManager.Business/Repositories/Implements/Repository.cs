@@ -74,11 +74,7 @@ namespace BusinessManager.Business.Repositories.Implements
             string? includeProperties = null, bool isTracking = true)
         {
             IQueryable<U> query = dbSet;
-
-            if (filter != null)
-            {
-                query = query.Where(filter);
-            }
+            var list = query.AsNoTracking().ToList();
 
             if (includeProperties != null)
             {
@@ -90,11 +86,14 @@ namespace BusinessManager.Business.Repositories.Implements
                 }
             }
 
-            if (!isTracking)
+            if (filter != null)
             {
-                query.AsNoTracking();
+                query = query.Where(filter);
             }
 
+            _db.ChangeTracker.QueryTrackingBehavior = !isTracking ? QueryTrackingBehavior.NoTracking : QueryTrackingBehavior.TrackAll;
+
+            var list2 = query.ToList();
             return _mapper.Map<IEnumerable<U>, IEnumerable<T>>(await query.ToListAsync());
         }
 
@@ -103,6 +102,7 @@ namespace BusinessManager.Business.Repositories.Implements
         {
             IQueryable<U> query = dbSet;
 
+
             if (filter != null)
             {
                 query = query.Where(filter);
@@ -122,6 +122,7 @@ namespace BusinessManager.Business.Repositories.Implements
             {
                 query.AsNoTracking();
             }
+
             var result = await query.FirstOrDefaultAsync();
             return _mapper.Map<T>(result);
         }

@@ -31,13 +31,13 @@ namespace BusinessManagerWeb.Pages.Book
             {
                 isLoading = true;
                 StateHasChanged();
-                authors = await UnitOfWork.Author.GetAllAsync();
-                bookSizes = await UnitOfWork.Size.GetAllAsync();
-                bookTags = await UnitOfWork.Tag.GetAllAsync();
-                publishers = await UnitOfWork.Publisher.GetAllAsync();
+                authors = await UnitOfWork.Author.GetAllAsync(isTracking: false);
+                bookSizes = await UnitOfWork.Size.GetAllAsync(isTracking: false);
+                bookTags = await UnitOfWork.Tag.GetAllAsync(isTracking: false);
+                publishers = await UnitOfWork.Publisher.GetAllAsync(isTracking: false);
                 if (Id != 0)
                 {
-                    Book = await UnitOfWork.Book.GetFirstOrDefaultAsync(book => book.Id == Id, includeProperties: "Author,Size,Tags,Publisher") ?? new();
+                    Book = await UnitOfWork.Book.GetFirstOrDefaultAsync(book => book.Id == Id, includeProperties: "Author,Size,Tags,Publisher", isTracking:false) ?? new();
                     Title = "Update";
                     OldImageUrl = Book.Avatar;
                 }

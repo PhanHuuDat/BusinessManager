@@ -4,6 +4,7 @@ using BusinessManager.DataAccess.DAOs;
 using BusinessManager.DataAccess.Data;
 using BusinessManager.Models.DTOs;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,7 +26,14 @@ namespace BusinessManager.Business.Repositories.Implements
 
             try
             {
+
+                foreach (var tag in obj.Tags)
+                {
+                    _db.Entry(tag).State = EntityState.Unchanged;
+                }
+
                 dbSet.Attach(obj);
+
                 await _db.SaveChangesAsync();
                 return true;
             }
@@ -39,6 +47,8 @@ namespace BusinessManager.Business.Repositories.Implements
         public async Task<bool> UpdateAsync(BookDTO entity)
         {
             var obj = await _db.Book.FirstOrDefaultAsync(book => book.Id == entity.Id);
+            var tagIds = entity.Tags.Select(s => s.Id);
+            var tags = _db.Tag.Where(tag => tagIds.Contains(tag.Id)).ToList(); ;
             if (obj != null)
             {
                 obj.Title = entity.Title;
@@ -51,7 +61,8 @@ namespace BusinessManager.Business.Repositories.Implements
                 obj.Discount = entity.Discount;
                 obj.PublishedDate = entity.PublishedDate ?? DateTime.Now;
                 obj.UpdatedDate = DateTimeOffset.UtcNow;
-                var result = await Task.Run(() => _db.Update(obj));
+                obj.Tags = tags;
+                _db.Update(obj);
                 await _db.SaveChangesAsync();
                 return true;
             }

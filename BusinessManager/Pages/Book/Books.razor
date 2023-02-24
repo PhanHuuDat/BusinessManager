@@ -18,7 +18,7 @@
         <MudLink Href="/books/create">
             <MudIconButton Icon="@Icons.Material.Filled.Add" Variant="Variant.Filled" Color="Color.Primary" ButtonType="ButtonType.Button" />
         </MudLink>
-        
+
     </ToolBarContent>
     <ColGroup>
         <col />
@@ -26,7 +26,7 @@
         <col />
         <col />
         <col />
-        <col style="width:80px;" />
+        <col style="width:120px;" />
     </ColGroup>
     <HeaderContent>
         <MudTh>Title</MudTh>
@@ -47,6 +47,9 @@
             <div class="d-flex">
                 <MudLink Href="@($"/books/update/{context.Id}")">
                     <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Outlined.Edit" Class="pa-0 flex-auto" />
+                </MudLink>
+                <MudLink Href="@($"/books/{context.Id}/import/")">
+                    <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Outlined.PlusOne" Class="pa-0 flex-auto" />
                 </MudLink>
                 <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Outlined.Delete" @onclick="(e) => DeleteItemAsync(context)" Class="pa-0 flex-auto" />
             </div>

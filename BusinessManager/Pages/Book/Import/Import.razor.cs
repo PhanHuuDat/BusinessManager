@@ -108,8 +108,6 @@ namespace BusinessManagerWeb.Pages.Book.Import
 
             return false;
         }
-
-
     }
 
 }
