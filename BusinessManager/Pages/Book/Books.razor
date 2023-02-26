@@ -26,6 +26,7 @@
         <col />
         <col />
         <col />
+        <col />
         <col style="width:120px;" />
     </ColGroup>
     <HeaderContent>
@@ -45,13 +46,16 @@
         <MudTd DataLabel="Published Date">@context.PublishedDate</MudTd>
         <MudTd>
             <div class="d-flex">
-                <MudLink Href="@($"/books/update/{context.Id}")">
-                    <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Outlined.Edit" Class="pa-0 flex-auto" />
+                <MudLink Href="@($"/books/update/{context.Id}")" Class="pa-0 flex-auto">
+                    <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Outlined.Edit" />
                 </MudLink>
-                <MudLink Href="@($"/books/{context.Id}/import/")">
-                    <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Outlined.PlusOne" Class="pa-0 flex-auto" />
+                <MudLink Href="@($"/books/{context.Id}/import/")" Class="pa-0 flex-auto">
+                    <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Outlined.PlusOne" />
                 </MudLink>
-                <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Outlined.Delete" @onclick="(e) => DeleteItemAsync(context)" Class="pa-0 flex-auto" />
+                <div class="pa-0 flex-auto">
+                    <MudIconButton Size="@Size.Small" Icon="@Icons.Material.Outlined.Delete" @onclick="(e) => DeleteItemAsync(context)"  />
+                </div>
+                
             </div>
         </MudTd>
     </RowTemplate>

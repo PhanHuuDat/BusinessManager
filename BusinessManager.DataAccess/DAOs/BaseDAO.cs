@@ -2,7 +2,7 @@
 {
     public abstract class BaseDAO
     {
-        public DateTimeOffset CreatedDate { get; set; } = DateTimeOffset.UtcNow;
-        public DateTimeOffset UpdatedDate { get; set; }
+        public DateTime CreatedDate { get; set; } = DateTime.Now;
+        public DateTime UpdatedDate { get; set; }
     }
 }

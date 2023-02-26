@@ -12,7 +12,7 @@ namespace BusinessManager.DataAccess.DAOs
         public int BookId { get; set; }
         public Book? Book { get; set; }
         [Required]
-        public double Price { get; set; }
+        public double Cost { get; set; }
         [Required]
         public int Quantity { get; set; }
         [Required]

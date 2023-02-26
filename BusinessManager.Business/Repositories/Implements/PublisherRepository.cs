@@ -27,7 +27,7 @@ namespace BusinessManager.Business.Repositories.Implements
                 objFromDb.Name = entity.Name;
                 objFromDb.Address = entity.Address;
                 objFromDb.Phone = entity.Phone;
-                objFromDb.UpdatedDate = DateTimeOffset.UtcNow;
+                objFromDb.UpdatedDate = DateTime.Now;
                 var result = await Task.Run(() => _db.Update(objFromDb));
                 await _db.SaveChangesAsync();
                 return true;

@@ -3,7 +3,7 @@
     public interface IUnitOfWork : IDisposable
     {
         IAuthorRepository Author { get; }
-        IBookCostRepository Import { get; }
+        IImportRepository Import { get; }
         IBookRepository Book { get; }
         IBookSizeRepository Size { get; }
         IBookTagRepository Tag { get; }

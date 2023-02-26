@@ -11,7 +11,7 @@ namespace BusinessManager.Business.Repositories.Implements
         {
             _db = db;
             Author = new AuthorRepository(db, mapper);
-            Import= new BookCostRepository(db, mapper);
+            Import= new ImportRepository(db, mapper);
             Book = new BookRepository(db, mapper);
             Size = new BookSizeRepository(db, mapper);
             Tag = new BookTagRepository(db, mapper);
@@ -19,7 +19,7 @@ namespace BusinessManager.Business.Repositories.Implements
         }
 
         public IAuthorRepository Author { get; private set; }
-        public IBookCostRepository Import { get; private set; }
+        public IImportRepository Import { get; private set; }
         public IBookRepository Book { get; private set; }
         public IBookSizeRepository Size { get; private set; }
         public IBookTagRepository Tag { get; private set; }

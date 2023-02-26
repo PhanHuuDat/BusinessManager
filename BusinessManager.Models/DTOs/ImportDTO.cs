@@ -16,6 +16,6 @@ namespace BusinessManager.Models.DTOs
         [Required]
         public int Quantity { get; set; }
         [Required]
-        public DateTimeOffset ImportDate { get; set; }
+        public DateTime ImportDate { get; set; }
     }
 }

@@ -33,7 +33,8 @@ namespace BusinessManager.DataAccess.DAOs
         public double Discount { get; set; }
         public DateTime PublishedDate { get; set; }
         public ICollection<Import>? Costs { get; set; }
-       
+        [Required]
+        [MinLength(1)]
         public ICollection<Tag> Tags { get; set; } = new List<Tag>();
     }
 }
