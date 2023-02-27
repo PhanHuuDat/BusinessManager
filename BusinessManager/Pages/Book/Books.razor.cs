@@ -36,7 +36,7 @@ namespace BusinessManagerWeb.Pages.Book
         private async Task GetItemListAsync()
         {
             var enumerable = await UnitOfWork.Book.GetAllAsync(includeProperties: "Author,Size,Tags,Publisher", isTracking: false);
-            itemList = enumerable.ToList();
+            itemList = enumerable.OrderByDescending(item => item.Id).ToList();
         }
 
         private bool FilterFunc(BookDTO item)

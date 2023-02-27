@@ -53,9 +53,9 @@ namespace BusinessManagerWeb.Pages.Book.Import
             if (!resultFromDialog.Canceled)
             {
                 //Get result when Dialog return ok
-                var result = (ImportDTO?)resultFromDialog.Data;
+                var result = (bool)resultFromDialog.Data;
                 //Handle when return value have Id != 0 => valid data
-                if (result != null)
+                if (result)
                 {
                     isLoading = true;
                     StateHasChanged();
@@ -86,7 +86,7 @@ namespace BusinessManagerWeb.Pages.Book.Import
             {
                 isLoading = true;
                 StateHasChanged();
-                var deleteResult = await UnitOfWork.Tag.DeleteAsync((int)itemDTO.Id!);
+                var deleteResult = await UnitOfWork.Tag.DeleteAsync(itemDTO.Id!);
                 if (deleteResult)
                 {
                     Snackbar.Add("Deleted Successfully", Severity.Success);

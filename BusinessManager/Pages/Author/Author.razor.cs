@@ -51,22 +51,15 @@ namespace BusinessManagerWeb.Pages.Author
             if (!resultFromDialog.Canceled)
             {
                 //Get result when Dialog return ok
-                var result = (AuthorDTO?)resultFromDialog.Data;
+                var result = (bool)resultFromDialog.Data;
                 //Handle when return value have Id != 0 => valid data
-                if (result != null)
+                if (result)
                 {
-                    //Check that is the object exist in list
-                    var obj = itemList.Find(e => e.Name == result.Name);
-                    if (obj != null)
-                    {
-                        //Change data if exist
-                        obj.Name = result.Name;
-                    }
-                    else
-                    {
-                        //Create Data Success + Not exist in list => new data
-                        await GetEntity(result);
-                    }
+                    isLoading = true;
+                    StateHasChanged();
+                    await GetItemListAsync();
+                    isLoading = false;
+                    StateHasChanged();
                 }
 
             }
@@ -116,13 +109,5 @@ namespace BusinessManagerWeb.Pages.Author
             return false;
         }
 
-        private async Task GetEntity(AuthorDTO authorDTO)
-        {
-            var getData = await UnitOfWork.Author.GetFirstOrDefaultAsync(tag => tag.Name == authorDTO.Name, isTracking: false);
-            if (getData != null)
-            {
-                itemList.Insert(0, getData);
-            }
-        }
     }
 }

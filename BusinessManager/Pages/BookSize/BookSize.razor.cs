@@ -50,22 +50,15 @@ namespace BusinessManagerWeb.Pages.BookSize
             if (!resultFromDialog.Canceled)
             {
                 //Get result when Dialog return ok
-                var result = (BookSizeDTO?)resultFromDialog.Data;
+                var result = (bool)resultFromDialog.Data;
                 //Handle when return value have Id != 0 => valid data
-                if (result != null)
+                if (result)
                 {
-                    //Check that is the object exist in list
-                    var obj = itemList.Find(e => e.SizeValue == result.SizeValue);
-                    if (obj != null)
-                    {
-                        //Change data if exist
-                        obj.SizeValue = result.SizeValue;
-                    }
-                    else
-                    {
-                        //Create Data Success + Not exist in list => new data
-                        await GetEntity(result);
-                    }
+                    isLoading = true;
+                    StateHasChanged();
+                    await GetItemListAsync();
+                    isLoading = false;
+                    StateHasChanged();
                 }
 
             }
@@ -116,13 +109,5 @@ namespace BusinessManagerWeb.Pages.BookSize
             return false;
         }
 
-        private async Task GetEntity(BookSizeDTO itemDTO)
-        {
-            var data = await UnitOfWork.Size.GetFirstOrDefaultAsync(tag => tag.SizeValue == itemDTO.SizeValue, isTracking: false);
-            if (data != null)
-            {
-                itemList.Insert(0, data);
-            }
-        }
     }
 }
