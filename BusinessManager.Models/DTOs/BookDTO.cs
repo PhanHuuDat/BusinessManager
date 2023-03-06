@@ -35,6 +35,7 @@ namespace BusinessManager.Models.DTOs
         [Required]
         [Range(0, 100)]
         public double Discount { get; set; }
+        public int Quantity { get; set; }
         [Required]
         public DateTime? PublishedDate { get; set; }
         public IEnumerable<ImportDTO>? BookCosts { get; set; }

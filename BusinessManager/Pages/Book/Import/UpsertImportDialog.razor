@@ -23,18 +23,18 @@
             <DataAnnotationsValidator />
             <MudNumericField Label="Cost" @bind-Value="Item!.Cost" For="@(() => Item!.Cost)" />
             <MudNumericField Label="Quantity" @bind-Value="Item!.Quantity" For="@(() => Item!.Quantity)" />
-            <MudTextField Label="Import Date" @bind-Value="Item!.ImportDate" For="@(() => Item!.ImportDate)" InputType="InputType.Date" />
+            <MudTextField Label="Import Date" @bind-Value="Item!.ImportDate" For="@(() => Item!.ImportDate)" Format="yyyy-MM-dd" InputType="InputType.Date" />
         </EditForm>
     </DialogContent>
     <DialogActions>
         <MudButton OnClick="Cancel" Disabled="isDisabled">Cancel</MudButton>
         @if (Item!.Id == 0)
         {
-            <MudButton Color="Color.Primary" ButtonType="ButtonType.Submit" Disabled="isDisabled" form="add-book-tag">Add</MudButton>
+            <MudButton Color="Color.Primary" ButtonType="ButtonType.Submit" Disabled="isDisabled" form="add-import">Add</MudButton>
         }
         else
         {
-            <MudButton Color="Color.Primary" ButtonType="ButtonType.Submit" Disabled="isDisabled" form="add-book-tag">Update</MudButton>
+            <MudButton Color="Color.Primary" ButtonType="ButtonType.Submit" Disabled="isDisabled" form="add-import">Update</MudButton>
         }
     </DialogActions>
 </MudDialog>
@@ -58,19 +58,19 @@
             }
             else
             {
-                Snackbar.Add("Added Failed", Severity.Error);
+                Snackbar.Add("Added Failed - Invalid Input", Severity.Error);
             }
         }
         else
         {
             result = await UnitOfWork.Import.UpdateAsync(Item);
-            if (result)
+            if (!result)
             {
-                Snackbar.Add("Updated Successfully", Severity.Success);
+                Snackbar.Add("Updated Failed - Invalid Input - Current Quantity is less than new quantity", Severity.Error);
             }
             else
             {
-                Snackbar.Add("Updated Failed", Severity.Error);
+                Snackbar.Add("Updated Successfully", Severity.Success);
             }
         }
         isDisabled = false;
@@ -78,4 +78,6 @@
     }
 
     private void Cancel() => MudDialog.Cancel();
+
+
 }

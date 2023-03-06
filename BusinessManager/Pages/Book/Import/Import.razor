@@ -15,7 +15,7 @@
         <MudSpacer />
         <MudTextField @bind-Value="searchString" Placeholder="Search" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
         <MudIconButton Icon="@Icons.Material.Filled.Add" Variant="Variant.Filled" Color="Color.Primary" ButtonType="ButtonType.Button"
-                       @onclick="(e) => OpenUpsertDialog(new ImportDTO(){Id=Id})" />
+                       @onclick="(e) => OpenUpsertDialog(new ImportDTO(){BookId=Id})" />
     </ToolBarContent>
     <ColGroup>
         <col />

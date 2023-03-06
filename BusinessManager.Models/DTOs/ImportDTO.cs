@@ -14,8 +14,9 @@ namespace BusinessManager.Models.DTOs
         [Required]
         public double Cost { get; set; }
         [Required]
+        [Range(1,int.MaxValue, ErrorMessage ="Quantity should greater than one.")]
         public int Quantity { get; set; }
         [Required]
-        public DateTime ImportDate { get; set; }
+        public DateTime? ImportDate { get; set; }
     }
 }

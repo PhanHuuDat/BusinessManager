@@ -75,6 +75,7 @@ namespace BusinessManager.Business.Repositories.Implements
         {
             IQueryable<U> query = dbSet;
 
+
             if (includeProperties != null)
             {
                 //abc,,xyz -> abc xyz
@@ -91,8 +92,9 @@ namespace BusinessManager.Business.Repositories.Implements
             }
 
             _db.ChangeTracker.QueryTrackingBehavior = isTracking ? QueryTrackingBehavior.TrackAll : QueryTrackingBehavior.NoTracking;
-
-            return _mapper.Map<IEnumerable<U>, IEnumerable<T>>(await query.ToListAsync());
+            var entities = await query.ToListAsync();
+            _db.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.TrackAll;
+            return _mapper.Map<IEnumerable<U>, IEnumerable<T>>(entities);
         }
 
         public virtual async Task<T> GetFirstOrDefaultAsync(Expression<Func<U, bool>>? filter = null, string? includeProperties = null,
@@ -118,6 +120,8 @@ namespace BusinessManager.Business.Repositories.Implements
             _db.ChangeTracker.QueryTrackingBehavior = isTracking ? QueryTrackingBehavior.TrackAll : QueryTrackingBehavior.NoTracking;
 
             var result = await query.FirstOrDefaultAsync();
+
+            _db.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.TrackAll;
             return _mapper.Map<T>(result);
         }
 

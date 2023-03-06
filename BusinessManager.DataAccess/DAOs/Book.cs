@@ -31,6 +31,7 @@ namespace BusinessManager.DataAccess.DAOs
         public Size? Size { get; set; }
         public double Price { get; set; }
         public double Discount { get; set; }
+        public int Quantity { get; set; }
         public DateTime PublishedDate { get; set; }
         public ICollection<Import>? Costs { get; set; }
         [Required]
