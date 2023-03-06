@@ -27,12 +27,14 @@
         <col />
         <col />
         <col />
+        <col />
         <col style="width:120px;" />
     </ColGroup>
     <HeaderContent>
         <MudTh>Title</MudTh>
         <MudTh>Publisher</MudTh>
         <MudTh>Size</MudTh>
+        <MudTh>Quantity</MudTh>
         <MudTh>Price</MudTh>
         <MudTh>Discount</MudTh>
         <MudTh>Published Date</MudTh>
@@ -40,7 +42,8 @@
     <RowTemplate>
         <MudTd DataLabel="Title">@context.Title</MudTd>
         <MudTd DataLabel="Publisher">@context.Publisher!.Name</MudTd>
-        <MudTd DataLabel="Publisher">@context.Size!.SizeValue</MudTd>
+        <MudTd DataLabel="Size">@context.Size!.SizeValue</MudTd>
+        <MudTd DataLabel="Quantity">@context.Quantity</MudTd>
         <MudTd DataLabel="Price">@context.Price</MudTd>
         <MudTd DataLabel="Discount">@(context.Discount)%</MudTd>
         <MudTd DataLabel="Published Date">@context.PublishedDate</MudTd>
