@@ -71,8 +71,7 @@ namespace BusinessManagerWeb.Pages.BookSize
             {
                 { "ContentText", "Do you really want to delete this item? This process cannot be undone." },
                 { "ButtonText", "Delete" },
-                { "Color", Color.Error },
-                { "Item" , itemDTO}
+                { "Color", Color.Error }
             };
             var options = new DialogOptions() { CloseButton = true, MaxWidth = MaxWidth.ExtraSmall };
             var dialog = DialogService.Show<SimpleDialog>("Delete Item", parameters, options);
