@@ -42,7 +42,7 @@ namespace BusinessManager.Business.Repositories.Implements
         {
             try
             {
-                var obj = await _db.Book.FirstOrDefaultAsync(book => book.Id == entity.Id);
+                var obj = await _db.Book.Include(b=>b.Tags).FirstOrDefaultAsync(book => book.Id == entity.Id);
                 var tagIds = entity.Tags!.Select(s => s.Id);
                 var tags = _db.Tag.Where(tag => tagIds.Contains(tag.Id)).ToList();
                 if (obj != null)
@@ -58,7 +58,6 @@ namespace BusinessManager.Business.Repositories.Implements
                     obj.PublishedDate = entity.PublishedDate ?? DateTime.Now;
                     obj.UpdatedDate = DateTime.Now;
                     obj.Tags = tags;
-                    _db.Update(obj);
                     await _db.SaveChangesAsync();
                     return true;
                 }

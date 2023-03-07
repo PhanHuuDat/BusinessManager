@@ -48,7 +48,7 @@ namespace BusinessManager.Business.Repositories.Implements
 
                 if (obj != null)
                 {
-                    var updateBook = await UpdateBookQuantityAsync(entity.BookId, entity.Quantity);
+                    var updateBook = await UpdateBookQuantityAsync(entity.BookId, entity.Quantity - obj.Quantity);
                     if (!updateBook)
                     {
                         return false;
