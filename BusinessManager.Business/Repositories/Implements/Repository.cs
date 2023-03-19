@@ -91,9 +91,14 @@ namespace BusinessManager.Business.Repositories.Implements
                 query = query.Where(filter);
             }
 
-            _db.ChangeTracker.QueryTrackingBehavior = isTracking ? QueryTrackingBehavior.TrackAll : QueryTrackingBehavior.NoTracking;
+            if (!isTracking)
+            {
+                query = query.AsNoTracking();
+            }
+
+
             var entities = await query.ToListAsync();
-            _db.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.TrackAll;
+
             return _mapper.Map<IEnumerable<U>, IEnumerable<T>>(entities);
         }
 
@@ -117,11 +122,13 @@ namespace BusinessManager.Business.Repositories.Implements
                 }
             }
 
-            _db.ChangeTracker.QueryTrackingBehavior = isTracking ? QueryTrackingBehavior.TrackAll : QueryTrackingBehavior.NoTracking;
+            if (!isTracking)
+            {
+                query = query.AsNoTracking();
+            }
 
             var result = await query.FirstOrDefaultAsync();
 
-            _db.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.TrackAll;
             return _mapper.Map<T>(result);
         }
 

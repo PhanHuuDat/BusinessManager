@@ -23,11 +23,12 @@ namespace BusinessManager.Business.Repositories.Implements
         public new async Task<bool> CreateAsync(BookDTO entity)
         {
             Book obj = _mapper.Map<Book>(entity);
-
+            
             try
             {
+                var tags = await _db.Tag.Where(tag => entity.Tags!.Select(t => t.Id).Contains(tag.Id)).ToListAsync();
+                obj.Tags = tags;
                 dbSet.Attach(obj);
-
                 await _db.SaveChangesAsync();
                 return true;
             }
@@ -42,7 +43,7 @@ namespace BusinessManager.Business.Repositories.Implements
         {
             try
             {
-                var obj = await _db.Book.Include(b=>b.Tags).FirstOrDefaultAsync(book => book.Id == entity.Id);
+                var obj = await _db.Book.Include(b => b.Tags).SingleOrDefaultAsync(book => book.Id == entity.Id);
                 var tagIds = entity.Tags!.Select(s => s.Id);
                 var tags = _db.Tag.Where(tag => tagIds.Contains(tag.Id)).ToList();
                 if (obj != null)

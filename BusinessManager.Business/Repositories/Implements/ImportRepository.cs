@@ -39,7 +39,6 @@ namespace BusinessManager.Business.Repositories.Implements
             return false;
         }
 
-
         public async Task<bool> UpdateAsync(ImportDTO entity)
         {
             try
@@ -60,6 +59,32 @@ namespace BusinessManager.Business.Repositories.Implements
                     obj.BookId = entity.BookId;
                     obj.UpdatedDate = DateTime.Now;
                     _db.Update(obj);
+                    await _db.SaveChangesAsync();
+                    return true;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+            }
+
+            return false;
+        }
+
+        public override async Task<bool> DeleteAsync(int id)
+        {
+            try
+            {
+                var obj = await _db.Import.FirstOrDefaultAsync(cost => cost.Id == id);
+                if (obj != null)
+                {
+                    var updateBook = await UpdateBookQuantityAsync(obj.BookId, -obj.Quantity);
+                    if (!updateBook)
+                    {
+                        return false;
+                    }
+
+                    _db.Remove(obj);
                     await _db.SaveChangesAsync();
                     return true;
                 }
