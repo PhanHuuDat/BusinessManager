@@ -5,7 +5,13 @@
 @inject IFileUpload FileUpload
 @inject NavigationManager NavigationManager
 
-<MudText Typo="Typo.h3">@Title Book</MudText>
+<PageTitle>@Title Book</PageTitle>
+
+<MudLink Href="/books">
+    <MudButton Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.KeyboardBackspace" Color="Color.Surface">Back</MudButton>
+</MudLink>
+
+<MudText Class="my-2" Typo="Typo.h4">@Title Book</MudText>
 
 <MudGrid>
     @if (isLoading)
